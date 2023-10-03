@@ -5,7 +5,7 @@ import './index.css'
 import { Provider } from 'react-redux';
 import store from './Store/PersistStore.js'
 import { ThemeProvider } from "@material-tailwind/react";
-
+import './Store/InterceptorUrl.js'
 // import "tw-elements-react/dist/css/tw-elements-react.min.css";
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>

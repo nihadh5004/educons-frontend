@@ -1,16 +1,15 @@
 import React from 'react'
+import CourseDetailPage from './CoursesComponents/CourseDetailPage'
 import NavBar from './NavBar'
-import CoursesPage from './CoursesComponents/CoursesPage'
 import Footer from './Footer'
-
-const Courses = () => {
+const CourseDetail = () => {
   return (
     <div>
         <NavBar/>
-        <CoursesPage is_admin={false}/>
+        <CourseDetailPage/>
         <Footer/>
     </div>
   )
 }
 
-export default Courses
+export default CourseDetail

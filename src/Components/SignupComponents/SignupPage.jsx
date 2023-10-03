@@ -4,18 +4,21 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import toast, { Toaster } from 'react-hot-toast';
 import { TEInput, TERipple } from "tw-elements-react";
+import { Spinner } from "@material-tailwind/react";
+
 const SignupPage = () => {
         
-  
+        
         // Create state variables to store form data
         const [username, setUsername] = useState('');
         const [email, setEmail] = useState('');
         const [password, setPassword] = useState('');
         const [confirmPassword, setConfirmPassword] = useState('');
-
+        const [isLoading, setIsLoading] = useState(false); // State to track loading
         const navigate = useNavigate();
         // Handle form submission
       const handleSubmit = async () => {
+       
         // Access form data from state variables
         console.log('Username:', username);
         console.log('Email:', email);
@@ -24,7 +27,7 @@ const SignupPage = () => {
         if (password != confirmPassword){
           toast.error('Password didnt match')
         }else{
-
+          setIsLoading(true); // Start loading
           try{
   
             const userData = {
@@ -56,6 +59,8 @@ const SignupPage = () => {
               toast.error(error.message);
               console.error('Login failed:', error.message);
             }
+          }finally {
+            setIsLoading(false); // Stop loading
           };
         }
       }
@@ -74,6 +79,11 @@ const SignupPage = () => {
         {/* <!-- Right column container with form --> */}
         <div className=" md:ml-1 ml-16 md:w-8/12 lg:ml-6 lg:w-5/12">
             <h1 className='text-center  md:text-5xl py-4 mb-3 '>Signup Here</h1>
+            {isLoading ? (
+                <div className="flex justify-center">
+                  <Spinner />
+                </div>
+              ) : (
           <form>
             {/* <!-- username input --> */}
             <TEInput
@@ -158,6 +168,7 @@ const SignupPage = () => {
            
            
           </form>
+           )}
         </div>
       </div>
     </div>

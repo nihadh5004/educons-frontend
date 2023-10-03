@@ -3,7 +3,7 @@ import senecaImg from '../../assets/Seneca-4.png'
 
 const BlogCards = () => {
   return (
-    <div className='bg-white drop-shadow-md overflow-hidden rounded-2xl mr-2 my-4 '>
+    <div className='bg-white drop-shadow-md overflow-hidden rounded-2xl mr-2 my-4 hover:transform hover:-translate-y-2 transition-transform'>
     <img src="https://m.economictimes.com/thumb/msid-103273405,width-2121,height-1413,resizemode-4,imgsize-289970/canada.jpg" alt=""
     className='h-40 w-full object-cover '
     />

@@ -2,7 +2,7 @@ import React from 'react'
 import senecaImg from '../../assets/Seneca-4.png'
 const Card = () => {
   return (
-    <div className='bg-white drop-shadow-md overflow-hidden rounded-2xl mr-2 my-4 '>
+    <div className='bg-white drop-shadow-md overflow-hidden rounded-2xl mr-2 my-4 hover:transform hover:-translate-y-2 transition-transform'>
         <img src={senecaImg} alt=""
         className='h-40 w-full object-cover '
         />

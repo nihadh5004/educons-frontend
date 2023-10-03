@@ -8,7 +8,7 @@ import { clearUserData } from '../Store/Redux/Actions/UserAction';
 import { Button } from "@material-tailwind/react";
 import { IconButton } from "@material-tailwind/react";
 
-const NavBar = () => {
+const AdminNavbar = () => {
     const { isAuthenticated, username, role } = useSelector((state) => state.user);
 
 
@@ -27,7 +27,7 @@ const NavBar = () => {
                 if (response.status === 200) { // Check for the appropriate status code
                   
                   dispatch(clearUserData());
-                  axios.defaults.headers.common['Authorization'] = null;
+                //   axios.defaults.headers.common['Authorization'] = null;
                   navigate('/login');
                   console.log('success');
                 } else {
@@ -41,43 +41,38 @@ const NavBar = () => {
     <div>
 
     
-    <div className='w-full h-[80px] bg-white border-b  fixed z-50  '>
+    <div className='w-full h-[80px] bg-black border-b  fixed z-50  '>
         <div className='md:max-w-[1240px]  max-w-[330px] w-full h-full flex justify-between items-center m-auto'>
 
-            <h1 className='h-[25px] text-2xl text-[#20B486] font-bold' style={{ cursor: 'pointer' }} onClick={()=>navigate('/')}>EduCons</h1>
+            <h1 className='h-[25px] md:text-2xl text-[#20B486] font-bold' style={{ cursor: 'pointer' }} onClick={()=>navigate('/dashboard')}>EduCons-Admin</h1>
 
             <div className='hidden md:flex'>
                 <ul className='flex gap-9'>
-                    <li className='group relative px-3 py-2 text-sm  ' style={{ cursor: 'pointer' }} onClick={()=>navigate('/')}>
-                    Home
+                    <li className='group relative px-3 py-2 text-sm text-white ' style={{ cursor: 'pointer' }} onClick={()=>navigate('/dashboard')} >
+                    Dashboard
                     <div className='absolute inset-x-0 bottom-0 h-1 bg-[#20B486] transform scale-x-0 origin-left transition-transform group-hover:scale-x-100'></div>
                     </li>
-                    <li className='group relative px-3 py-2 text-sm ' style={{ cursor: 'pointer' }} onClick={()=>navigate('/courses')}>
+                    
+                    <li className='group relative px-3 py-2 text-sm text-white' style={{ cursor: 'pointer' }} onClick={()=>navigate('/userlist')}>
+                    Users
+                    <div className='absolute inset-x-0 bottom-0 h-1 bg-[#20B486] transform scale-x-0 origin-left transition-transform group-hover:scale-x-100'></div>
+                    </li>
+                    <li className='group relative px-3 py-2 text-sm text-white ' style={{ cursor: 'pointer' }} onClick={()=>navigate('/countries')}>
+                    Country
+                    <div className='absolute inset-x-0 bottom-0 h-1 bg-[#20B486]  transform scale-x-0 origin-left transition-transform group-hover:scale-x-100'></div>
+                    </li>
+                    <li className='group relative px-3 py-2 text-sm text-white ' style={{ cursor: 'pointer' }} onClick={()=>navigate('/courseslist')} >
                     Courses
                     <div className='absolute inset-x-0 bottom-0 h-1 bg-[#20B486] transform scale-x-0 origin-left transition-transform group-hover:scale-x-100'></div>
                     </li>
-                    <li className='group relative px-3 py-2 text-sm ' style={{ cursor: 'pointer' }} onClick={()=>navigate('/blogs')}>
+                    <li className='group relative px-3 py-2 text-sm text-white ' style={{ cursor: 'pointer' }}  >
                     Blogs
                     <div className='absolute inset-x-0 bottom-0 h-1 bg-[#20B486] transform scale-x-0 origin-left transition-transform group-hover:scale-x-100'></div>
                     </li>
-                    <li className='group relative px-3 py-2 text-sm ' style={{ cursor: 'pointer' }} >
-                    Community
+                    <li className='group relative px-3 py-2 text-sm text-white ' style={{ cursor: 'pointer' }}  >
+                    Applications
                     <div className='absolute inset-x-0 bottom-0 h-1 bg-[#20B486] transform scale-x-0 origin-left transition-transform group-hover:scale-x-100'></div>
                     </li>
-                    <li className='group relative px-3 py-2 text-sm ' style={{ cursor: 'pointer' }} >
-                    About Us
-                    <div className='absolute inset-x-0 bottom-0 h-1 bg-[#20B486] transform scale-x-0 origin-left transition-transform group-hover:scale-x-100'></div>
-                    </li>
-                    <li className='group relative px-3 py-2 text-sm ' style={{ cursor: 'pointer' }} onClick={()=>navigate('/profile')} >
-                    Profile
-                    <div className='absolute inset-x-0 bottom-0 h-1 bg-[#20B486] transform scale-x-0 origin-left transition-transform group-hover:scale-x-100'></div>
-                    </li>
-                    {role &&
-                    <li className='group relative px-3 py-2 text-sm ' style={{ cursor: 'pointer' }} onClick={()=>navigate('/dashboard')} >
-                    Admin
-                    <div className='absolute inset-x-0 bottom-0 h-1 bg-[#20B486] transform scale-x-0 origin-left transition-transform group-hover:scale-x-100'></div>
-                    </li>
-}
                 </ul>
             </div>
             <div className='hidden md:flex gap-6'>
@@ -86,22 +81,17 @@ const NavBar = () => {
       className="bg-black text-white rounded-full p-2 transition-all duration-300 transform group hover:bg-green-500 hover:scale-105"
       onClick={()=>navigate('/profile')}
     >
-      <div className="group-hover:block hidden">
-        {/* Display username on hover */}
-        <span className="bg-black text-white p-2 rounded-md absolute top-[-10px] left-[-120px]">
-          Hey {username}
-        </span>
-      </div>
+      
       <i className="fa fa-user" />
     </IconButton>}
                 </div>
-                {isAuthenticated ? <IconButton variant="text" className='  bg-red-500 text-white rounded-full transition-all duration-300 transform group hover:bg-black hover:scale-105' onClick={handleLogout} ><i className="fa fa-power-off" /></IconButton > :  <IconButton variant="text" className='  bg-[#20B486] text-white rounded-full hover:bg-black' onClick={()=>(navigate('/login'))} ><i className="fa fa-power-off" /></IconButton >
+                {isAuthenticated ? <IconButton variant="text" className='  bg-red-500 text-white rounded-full transition-all duration-300 transform group hover:bg-gray-500 hover:scale-105' onClick={handleLogout} ><i className="fa fa-power-off" /></IconButton > :  <IconButton variant="text" className='  bg-[#20B486] text-white rounded-full hover:bg-black' onClick={()=>(navigate('/login'))} ><i className="fa fa-power-off" /></IconButton >
  }
             </div>
             {/* <button className=' px-3 py-2 rounded-md bg-[#20B486] text-white text-sm' style={{ cursor: 'pointer' }} onClick={()=>navigate('/login')}>Login</button> */}
 
-            <div className="md:hidden" onClick={()=>setToggle(!toggle)}>
-               {toggle ? <i className="fa fa-times"></i> : <i  className="fa fa-bars"></i> }
+            <div className="md:hidden bg-black" onClick={()=>setToggle(!toggle)}>
+               {toggle ? <i className="fa fa-times bg-white"></i> : <i  className="fa fa-bars bg-white"></i> }
                 {/* <i  className="fa fa-bars"></i> */}
                 {/* <i className="fa fa-times"></i> */}
             </div>
@@ -128,4 +118,4 @@ const NavBar = () => {
   )
 }
 
-export default NavBar
+export default AdminNavbar

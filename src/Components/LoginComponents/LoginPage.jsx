@@ -6,6 +6,7 @@ import { TEInput, TERipple } from "tw-elements-react";
 import { useDispatch } from 'react-redux';
 import { setUserData } from '../../Store/Redux/Actions/UserAction';
 import toast, { Toaster } from 'react-hot-toast';
+import { Spinner } from "@material-tailwind/react";
 
 // import { ToastContainer, toast } from 'react-toastify';
 
@@ -14,39 +15,43 @@ const LoginPage = () => {
   const navigate = useNavigate();
   const [username,setUsername]=useState('')
   const [password,setPassword]=useState('')
-  const notify = () => toast.error('Here is your toast.');
+  const [isLoading, setIsLoading] = useState(false); // State to track loading
+
 
   const handleLogin = async () => {
     try {
+      setIsLoading(true); // Start loading
+
       const loginData = {
         username: username,
         password: password,
       };
-  
-      const response = await axios.post(`${baseUrl}/token/`, loginData);
-      if(response.status === 200){
 
+      const response = await axios.post(`${baseUrl}/token/`, loginData);
+      if (response.status === 200) {
         // Assuming the Django API returns the token in response.data.access
         const accessToken = response.data.access;
         const refreshToken = response.data.refresh;
         const role = response.data.is_superuser;
         const userId = response.data.id;
-  
-  
+
         localStorage.clear();
         localStorage.setItem('accessToken', accessToken);
         localStorage.setItem('refreshToken', refreshToken);
-    
-        dispatch(setUserData({ username, role , userId }));
-        navigate('/'); 
-      }else {
+        axios.defaults.headers.common['Authorization'] = `Bearer ${response.data['access']}`;
+
+        dispatch(setUserData({ username, role, userId }));
+        
+        navigate('/');
+      } else {
         toast.error('Login failed. Please check your credentials.');
       }
-  
     } catch (error) {
       // Handle login error here
       toast.error('Login failed. Please check your credentials.');
       console.error('Login failed:', error);
+    } finally {
+      setIsLoading(false); // Stop loading
     }
   };
   return (
@@ -64,6 +69,11 @@ const LoginPage = () => {
         {/* <!-- Right column container with form --> */}
         <div className=" md:ml-1 ml-16 md:w-8/12 w-full lg:ml-6 lg:w-5/12">
             <h1 className='text-center  md:text-5xl py-4 mb-3 '>Login Here</h1>
+          {isLoading ? (
+                <div className="flex justify-center">
+                  <Spinner />
+                </div>
+              ) : (
           <form>
             {/* <!-- username input --> */}
             <TEInput
@@ -134,6 +144,7 @@ const LoginPage = () => {
            
            
           </form>
+          )}
         </div>
       </div>
     </div>

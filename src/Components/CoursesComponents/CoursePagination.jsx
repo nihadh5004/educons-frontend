@@ -2,7 +2,7 @@ import React from 'react'
 import { Button, IconButton,Typography  } from "@material-tailwind/react";
 import { ArrowRightIcon, ArrowLeftIcon } from "@heroicons/react/24/outline";
 const CoursePagination = () => {
-    const [active, setActive] = React.useState(1);
+  const [active, setActive] = React.useState(1);
  
   const next = () => {
     if (active === 10) return;

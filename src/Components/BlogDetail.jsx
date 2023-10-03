@@ -1,16 +1,16 @@
 import React from 'react'
 import NavBar from './NavBar'
-import CoursesPage from './CoursesComponents/CoursesPage'
+import BlogDetailPage from './BlogComponents/BlogDetailPage'
 import Footer from './Footer'
 
-const Courses = () => {
+const BlogDetail = () => {
   return (
     <div>
         <NavBar/>
-        <CoursesPage is_admin={false}/>
+        <BlogDetailPage/>
         <Footer/>
     </div>
   )
 }
 
-export default Courses
+export default BlogDetail
