@@ -7,11 +7,12 @@ import Modal from 'react-modal';
 import ReactCrop from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
 const ProfilePage = () => {
-  const { isAuthenticated, username, role } = useSelector((state) => state.user);
+  const { isAuthenticated, username, role , student } = useSelector((state) => state.user);
 
   const [profileData, setProfileData] = useState({});
   const [isLoading, setIsLoading] = useState(true);
-
+  const [selectedImage, setSelectedImage] = useState(null);
+  const[isProfilePic,setIsProfilePic]=useState(false)
   useEffect(() => {
     const fetchProfileData = async () => {
       try {
@@ -22,6 +23,7 @@ const ProfilePage = () => {
           withCredentials: true
         });
         setProfileData(response.data);
+        setSelectedImage(response.data.image)
         console.log(response.data);
         setIsLoading(false);
       } catch (error) {
@@ -31,7 +33,7 @@ const ProfilePage = () => {
     };
 
     fetchProfileData();
-  }, []);
+  }, [isProfilePic]);
 
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
  
@@ -50,23 +52,50 @@ const ProfilePage = () => {
     contact: '',
   });
  
-  const [selectedImage, setSelectedImage] = useState(null);
-  const[isProfilePic,setIsProfilePic]=useState(false)
+
   const handleCameraIconClick = () => {
     // Trigger the file input element to open the file picker dialog
     window.fileInput.click();
   };
 
-  const handleFileInputChange = (event) => {
+  const handleFileInputChange = async (event) => {
     const selectedFile = event.target.files[0];
-    setSelectedImage(URL.createObjectURL(selectedFile));
-    setIsProfilePic(true)
-    setIsUploadingPhoto(true);
+  
+    const formData = new FormData();
+    formData.append('file', selectedFile);
+    formData.append('username', username);
+    
+    try {
+      const response = await axios.post(`${baseUrl}/upload-profile-pic/`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data', // Set the content type to multipart/form-data
+        },
+        withCredentials: true,
+      });
+  
+      if (response.status === 200) {
+        // File upload successful
+        console.log('File uploaded successfully');
+        setSelectedImage(URL.createObjectURL(selectedFile));
+        setIsProfilePic(true);
+        // Handle the response data if needed
+      } else {
+        // File upload failed
+        console.error('File upload failed');
+        // Handle the error
+      }
+    } catch (error) {
+      // Handle any network or other errors
+      console.error('File upload error:', error);
+    }
+  
+    
+    // setIsUploadingPhoto(true);
   };
-
+  
  
 
-
+  console.log(selectedImage);
 
 
 
@@ -127,8 +156,8 @@ const ProfilePage = () => {
         <div className="grid grid-cols-1 md:grid-cols-3">
           <div className="relative">
           <div className="w-48 h-48 bg-indigo-100 mx-auto rounded-full shadow-2xl absolute inset-x-0 top-0 -mt-24 flex items-center justify-center text-indigo-500">
-          {isProfilePic ? ( // Check if an image is selected
-    <img src={selectedImage} alt="Profile" className="w-48 h-48 mx-auto rounded-full shadow-2xl object-cover" />
+          {selectedImage ? ( // Check if an image is selected
+    <img src={`${baseUrl}/${selectedImage}`} alt="Profile" className="w-48 h-48 mx-auto rounded-full shadow-2xl object-cover" />
   ) : (
         <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="h-54 w-24" onClick={handleCameraIconClick}
         style={{ cursor: 'pointer' }}>
@@ -170,15 +199,25 @@ const ProfilePage = () => {
           </div>
         </div>
 
-        <div className="mt-20 text-center  pb-12">
-          <h1 className="text-4xl font-medium text-gray-700">{profileData.username}</h1>
-          <p className="font-light text-gray-600 mt-3">Email : {profileData.email}</p>
-          <p className="font-light text-gray-600 mt-3">Contact : {profileData.phone}</p>
-          <p className="font-light text-gray-600 mt-3">Bucharest, Romania</p>
+        <div className="mt-20 text-center pb-12">
+    <div className=" flex justify-center">
+        <h1 className="text-4xl font-medium text-gray-700">
+            {profileData.username}
+        </h1>
+        {!student &&
+            <svg xmlns="http://www.w3.org/2000/svg" fill="parisGreen" viewBox="0 0 24 24" strokeWidth={1.5} stroke="white" className="w-6 h-6 mt-2">
+  <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-1.043 3.296 3.745 3.745 0 01-3.296 1.043A3.745 3.745 0 0112 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 01-3.296-1.043 3.745 3.745 0 01-1.043-3.296A3.745 3.745 0 013 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 011.043-3.296 3.746 3.746 0 013.296-1.043A3.746 3.746 0 0112 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.296 1.043 3.746 3.746 0 011.043 3.296A3.745 3.745 0 0121 12z" />
+</svg>
+}
+    </div>
+    <p className="font-light text-gray-600 mt-3">Email : {profileData.email}</p>
+    <p className="font-light text-gray-600 mt-3">Contact : {profileData.phone}</p>
+    <p className="font-light text-gray-600 mt-3">Bucharest, Romania</p>
 
-          <p className="mt-8 text-gray-500">Solution Manager - Creative Tim Officer</p>
-          <p className="mt-2 text-gray-500">University of Computer Science</p>
-        </div>
+    <p className="mt-8 text-gray-500">Solution Manager - Creative Tim Officer</p>
+    <p className="mt-2 text-gray-500">University of Computer Science</p>
+</div>
+
       </div>
 
       <Modal

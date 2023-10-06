@@ -16,6 +16,7 @@ const initialState = {
           isAuthenticated: true,
           username: action.payload.username,
           role: action.payload.role,
+          student: action.payload.student,
           userId : action.payload.userId,
         };
       case 'CLEAR_USER_DATA':

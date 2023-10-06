@@ -7,8 +7,7 @@ const Courseslist = () => {
   return (
     <div>
         <AdminNavbar/>
-        <AddCourseButton/>
-        <CoursesPage is_admin={true} />
+        <CoursesPage is_admin={true} is_consultancy={false} />
     </div>
   )
 }

@@ -1,11 +1,11 @@
 import React from 'react'
-import AdminNavbar from '../../AdminNavbar'
 import AddCourseFormPage from './AddCourseFormPage'
+import ConsultancyNavbar from '../../ConsultancyComponents/ConsultancyNavbar'
 
 const AddCoursPage = () => {
   return (
     <div>
-        <AdminNavbar/>
+        <ConsultancyNavbar/>
         <AddCourseFormPage/>
     </div>
   )

@@ -9,11 +9,12 @@ import { baseUrl } from '../../Store/BaseUrl';
 import { useSelector } from 'react-redux'; // Import useSelector from react-redux
 import { Button, IconButton,Typography  } from "@material-tailwind/react";
 import { ArrowRightIcon, ArrowLeftIcon } from "@heroicons/react/24/outline";
-const BlogPage = () => {
+const BlogPage = ({is_admin}) => {
   const [blogs, setBlogs] = useState([]); // State variable to store the blog data
   const [isLoading, setIsLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false); // State variable for the modal
   const [searchQuery, setSearchQuery] = useState(""); // State variable for search query
+  const [trigger, setTrigger] = useState(false); // Add a trigger state variable     
   const username = useSelector(state => state.user.username);
   const student = true;
   const [active, setActive] = React.useState(1);
@@ -57,8 +58,12 @@ const closeModal = () => {
           },
           withCredentials: true,
         });
+        const filteredBlogs = is_admin
+          ? response.data
+          : response.data.filter(blog => blog.is_active);
         // Assuming the API response is an array of blogs
-        setBlogs(response.data);
+        setBlogs(filteredBlogs);
+        console.log(response.data);
         setIsLoading(false);
       } catch (error) {
         console.error('Error fetching blogs:', error);
@@ -68,7 +73,7 @@ const closeModal = () => {
 
     // Call the function to fetch data when the component mounts
     fetchBlogs();
-  }, [closeModal]); // Empty dependency array to ensure the request is made only once
+  }, [trigger]); // Empty dependency array to ensure the request is made only once
 
   
   // Function to handle form submission
@@ -95,6 +100,8 @@ const closeModal = () => {
 
       // Close the modal after successful submission
       closeModal();
+      setTrigger(prevTrigger => !prevTrigger);
+
     } catch (error) {
       console.error('Error submitting the blog:', error);
     }
@@ -133,12 +140,14 @@ const closeModal = () => {
   return (
     <div className='bg-[#F2F5EB]'>
       <div className='md:ml-16 ml-3 md:flex justify-between'>
+        {!is_admin &&
         <button className='py-2 px-4 mt-4 border bg-gray-300' onClick={openModal}>
           Add Blog
         </button>
+        }
         <form
           action=""
-          className='bg-white border max-w-[350px] md:p-2 p-2 mb-2 mr-5 mt-4 shadow-lg rounded-lg flex justify-between'
+          className='bg-white border max-w-[350px] md:p-2 p-2 mb-2 mr-5 mt-4 shadow-lg rounded-lg ml-auto flex justify-between'
         >
           <input
             className='bg-white w-full outline-none focus:outline-none'
@@ -165,6 +174,7 @@ const closeModal = () => {
               image={`${baseUrl}/${blog.image}`}
               created_at={blog.created_date}
               content={blog.truncated_content}
+              is_admin={is_admin}
             />
           ))
         )}

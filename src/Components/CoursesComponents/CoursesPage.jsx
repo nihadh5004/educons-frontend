@@ -5,10 +5,10 @@ import { baseUrl } from "../../Store/BaseUrl";
 import CoursePageCard from "./CoursePageCard";
 import FilterDrawer from "./FilterDrawer";
 import CoursePagination from "./CoursePagination";
-
+import {  useSelector } from "react-redux/es/hooks/useSelector";
 import { Button, IconButton, Typography } from "@material-tailwind/react";
 import { ArrowRightIcon, ArrowLeftIcon } from "@heroicons/react/24/outline";
-const CoursesPage = ({is_admin}) => {
+const CoursesPage = ({is_admin ,is_consultancy}) => {
   const [coursesData, setCoursesData] = useState({
     courses: [],
     currentPage: 1,
@@ -18,9 +18,10 @@ const CoursesPage = ({is_admin}) => {
   const [isLoading, setIsLoading] = useState(true);
   const [countryFilter, setCountryFilter] = useState([]);
   const [courseTypeFilter, setCourseTypeFilter] = useState([]);
+  const [consultancyFilter, setConsultancyFilter] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [active, setActive] = React.useState(1);
-
+  const userId =useSelector((state) => state.user.userId);
   const handleSearchInputChange = (event) => {
     const { value } = event.target;
     setSearchQuery(value);
@@ -54,6 +55,10 @@ const CoursesPage = ({is_admin}) => {
     setCountryFilter(newFilter);
   };
 
+  const updateConsultancyFilter = (newFilter) => {
+    setConsultancyFilter(newFilter);
+  };
+
   // Function to update the course type filter state
   const updateCourseTypeFilter = (newFilter) => {
     setCourseTypeFilter(newFilter);
@@ -72,7 +77,36 @@ const CoursesPage = ({is_admin}) => {
   };
 
   const [originalCourses, setOriginalCourses] = useState([]);
+{is_consultancy ?
+useEffect(() => {
+  const fetchCoursesData = async () => {
+    try {
+      const response = await axios.get(`${baseUrl}/consultancy-courses/${userId}`, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        withCredentials: true,
+      });
 
+      const courses = response.data;
+      setCoursesData({
+        courses,
+        currentPage: 1,
+        itemsPerPage: 2,
+        totalPages: Math.ceil(courses.length / 2),
+      });
+      setOriginalCourses(courses);
+      console.log(courses);
+      setIsLoading(false);
+    } catch (error) {
+      console.error("Error fetching courses:", error);
+      setIsLoading(false);
+    }
+  };
+
+  fetchCoursesData();
+}, []) // Empty dependency array to ensure the request is made only once  
+:
   useEffect(() => {
     const fetchCoursesData = async () => {
       try {
@@ -100,7 +134,8 @@ const CoursesPage = ({is_admin}) => {
     };
 
     fetchCoursesData();
-  }, []); // Empty dependency array to ensure the request is made only once
+  }, []) // Empty dependency array to ensure the request is made only once
+}
 
   useEffect(() => {
     // Apply filters based on selected countryFilter
@@ -117,6 +152,11 @@ const CoursesPage = ({is_admin}) => {
         courseTypeFilter.includes(course.course_type.name)
       );
     }
+    if (consultancyFilter.length > 0) {
+      filteredCourses = filteredCourses.filter((course) =>
+      consultancyFilter.includes(course.added_by.username)
+      );
+    }
 
     // Apply search query filter
     if (searchQuery.trim() !== "") {
@@ -131,14 +171,14 @@ const CoursesPage = ({is_admin}) => {
       itemsPerPage: 2,
       totalPages: Math.ceil(filteredCourses.length / 2),
     });
-  }, [countryFilter, courseTypeFilter, searchQuery ,originalCourses ]);
+  }, [countryFilter, courseTypeFilter, searchQuery ,originalCourses , consultancyFilter ]);
 
   const startIndex = (active - 1) * coursesData.itemsPerPage;
   const endIndex = startIndex + coursesData.itemsPerPage;
   const slicedCourses = coursesData.courses.slice(startIndex, endIndex);
   
   return (
-    <div className="bg-[#F2F5EB]">
+    <div className="bg-[#e4f5eb]">
       <div className="flex justify-between w-full">
 
       <FilterDrawer
@@ -146,8 +186,9 @@ const CoursesPage = ({is_admin}) => {
         courseTypeFilter={courseTypeFilter}
         updateCountryFilter={updateCountryFilter}
         updateCourseTypeFilter={updateCourseTypeFilter}
+        updateConsultancyFilter={updateConsultancyFilter}
       />
-      <form action="" className='bg-white border  max-w-[250px] md:p-2 p-2 mb-2 mr-5   mt-4  shadow-lg rounded-lg flex justify-between'>
+      <form action="" className='bg-white border  max-w-[250px] md:p-2 p-2 mb-2 mr-5 md:mr-16 md:mt-7   mt-4  shadow-lg rounded-lg flex justify-between'>
       <input
           className='bg-white w-full outline-none focus:outline-none' 
           type="text"
@@ -173,6 +214,7 @@ const CoursesPage = ({is_admin}) => {
               image={`http://127.0.0.1:8000/${course.image}`}
               duration={course.duration}
               is_admin = {is_admin}
+              is_consultancy = {is_consultancy}
               courseId={course.id}
               deleteCourse={deleteCourse}
             />

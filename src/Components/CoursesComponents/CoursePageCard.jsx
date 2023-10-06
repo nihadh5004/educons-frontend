@@ -9,7 +9,7 @@ import {
     Typography,
     Button,
   } from "@material-tailwind/react";
-const CoursePageCard = ({ course, image,college, duration , is_admin , courseId, deleteCourse }) => {
+const CoursePageCard = ({ course, image,college, duration , is_admin ,is_consultancy, courseId, deleteCourse }) => {
   const navigate = useNavigate();
   const handleDelete = async () => {
     try {
@@ -27,8 +27,8 @@ const CoursePageCard = ({ course, image,college, duration , is_admin , courseId,
     }
   };
   return (
-    <div>
-        <Card className="w-full h-[300px] max-w-2/3 mt-2 flex-row">
+    <div className='md:px-14'>
+        <Card className="w-full h-[300px] max-w-2/3 mt-3 flex-row">
       <CardHeader
         shadow={false}
         floated={false}
@@ -75,7 +75,7 @@ const CoursePageCard = ({ course, image,college, duration , is_admin , courseId,
             </svg>
           </Button>
           {/* </a> */}
-          {is_admin &&(
+          {is_consultancy &&(
 
                     
           <div className='flex'>

@@ -6,7 +6,7 @@ const Signup = () => {
   return (
     <div>
         <NavBar/>
-        <SignupPage/>
+        <SignupPage is_consultancy = {false}/>
     </div>
   )
 }

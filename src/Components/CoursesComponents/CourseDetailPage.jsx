@@ -90,7 +90,7 @@ const CourseDetailPage = () => {
     <div>
 
 <div className="relative">
-  <img src={senecaImg} alt="" className="md:h-[600px] h-[400px] w-full" />
+  <img src={`${baseUrl}/${courseDetails.course.image}`} alt="" className="md:h-[600px] h-[400px] w-full" />
   <div className="absolute top-32 left-1/2 transform -translate-x-1/2 bg-opacity-80 bg-white p-6 md:w-[500px]  w-[300px] rounded-lg">
     <div className=''>
     <h1 className="text-2xl font-semibold">{courseDetails.course.name}</h1>

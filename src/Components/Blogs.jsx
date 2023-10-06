@@ -6,7 +6,7 @@ const Blogs = () => {
   return (
     <div>
         <NavBar/>
-        <BlogPage/>
+        <BlogPage is_admin={false} />
         
         <Footer/>
     </div>

@@ -6,7 +6,7 @@ import toast, { Toaster } from 'react-hot-toast';
 import { TEInput, TERipple } from "tw-elements-react";
 import { Spinner } from "@material-tailwind/react";
 
-const SignupPage = () => {
+const SignupPage = ({is_consultancy}) => {
         
         
         // Create state variables to store form data
@@ -34,6 +34,7 @@ const SignupPage = () => {
               username,
               email,
               password,
+              is_consultancy,
             };
             const response = await axios.post('http://127.0.0.1:8000/signup',
                             userData ,{headers: 
@@ -78,7 +79,13 @@ const SignupPage = () => {
 
         {/* <!-- Right column container with form --> */}
         <div className=" md:ml-1 ml-16 md:w-8/12 lg:ml-6 lg:w-5/12">
-            <h1 className='text-center  md:text-5xl py-4 mb-3 '>Signup Here</h1>
+          {is_consultancy?
+          
+          <h1 className='text-center  md:text-5xl py-4 mb-3 '>Consultancy Signup</h1>
+          :
+          
+            <h1 className='text-center  md:text-5xl py-4 mb-3 '>User Signup</h1>
+          }
             {isLoading ? (
                 <div className="flex justify-center">
                   <Spinner />

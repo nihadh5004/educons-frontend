@@ -2,8 +2,12 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { baseUrl } from '../../../Store/BaseUrl';
 import {useNavigate} from 'react-router-dom'
+import { useSelector ,useDispatch } from 'react-redux';
+
 const AddCourseFormPage = () => {
   // Local state for form fields
+  const { userId } = useSelector((state) => state.user);
+
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: '',
@@ -47,6 +51,7 @@ const AddCourseFormPage = () => {
     formDataToSend.append('duration', formData.duration);
     formDataToSend.append('description', formData.description);
     formDataToSend.append('is_active', formData.is_active);
+    formDataToSend.append('user_id', userId);
 
     try {
       // Send a POST request to the backend to add the course
@@ -69,7 +74,7 @@ const AddCourseFormPage = () => {
         description: '',
         is_active: true,
       });
-      navigate('/courseslist')
+      navigate('/consultancy-courses')
     } catch (error) {
       // Handle errors, e.g., show an error message
       console.error('Error adding course:', error);

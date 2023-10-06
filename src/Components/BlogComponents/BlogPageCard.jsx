@@ -10,7 +10,7 @@ import {
   IconButton,
 } from '@material-tailwind/react';
 import {useNavigate} from 'react-router-dom'
-const BlogPageCard = ({ id ,user, image,heading, created_at, content }) => {
+const BlogPageCard = ({ id ,user, image,heading, created_at, content , is_admin }) => {
   const formattedDate = new Date(created_at).toLocaleDateString();
   const navigate=useNavigate();
   return (
@@ -42,9 +42,15 @@ const BlogPageCard = ({ id ,user, image,heading, created_at, content }) => {
           <Typography color='gray'>{content}....</Typography>
         </CardBody>
         <CardFooter className='pt-3'>
+          {is_admin ?
+          <Button size='lg' fullWidth={true} className='bg-gray-700 ' onClick={()=>navigate(`/admin-blog-details?id=${id}`)}>
+            View Full Blog
+          </Button>
+          :
           <Button size='lg' fullWidth={true} className='bg-gray-700 ' onClick={()=>navigate(`/blog-details?id=${id}`)}>
             View Full Blog
           </Button>
+          }
         </CardFooter>
       </Card>
     </div>
