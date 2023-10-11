@@ -1,4 +1,4 @@
-import React from 'react'
+import React,{useState} from 'react'
 import axios from 'axios';
 import { useNavigate } from 'react-router';
 import { baseUrl } from '../../Store/BaseUrl';
@@ -9,8 +9,18 @@ import {
     Typography,
     Button,
   } from "@material-tailwind/react";
-const CoursePageCard = ({ course, image,college, duration , is_admin ,is_consultancy, courseId, deleteCourse }) => {
+import EditCourseModal from '../ConsultancyComponents/CourseComponents.jsx/EditCourseModal';
+const CoursePageCard = ({ course, image,college, duration , country,description,updateChanges, is_admin , is_active,is_consultancy, courseId, deleteCourse , updateCourseIsActive  }) => {
   const navigate = useNavigate();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  // Function to close the modal
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
   const handleDelete = async () => {
     try {
       // Send a DELETE request to the backend to delete the course
@@ -22,10 +32,26 @@ const CoursePageCard = ({ course, image,college, duration , is_admin ,is_consult
 
       // If the delete request is successful, call the onDelete callback
       deleteCourse(courseId);
+
     } catch (error) {
       console.error('Error deleting course:', error);
     }
   };
+
+  const handleCourse =async () =>{
+    try{
+      const response = await axios.post(`${baseUrl}/block-course/`,
+      {courseId},{
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      
+      updateCourseIsActive(courseId, response.data.is_active );
+    }catch (error) {
+      console.error('Error Blocking course:', error);
+    }
+  }
   return (
     <div className='md:px-14'>
         <Card className="w-full h-[300px] max-w-2/3 mt-3 flex-row">
@@ -48,16 +74,18 @@ const CoursePageCard = ({ course, image,college, duration , is_admin ,is_consult
           {college}
         </Typography>
         <Typography variant="p" color="blue-gray" className="mb-2">
-          Canada,Ontario
+          {country}
         </Typography>
+        
         <Typography color="gray" className="mb-8 font-normal">
-          Course Duration : {duration} Years
+          {description.split(' ').slice(0, 25).join(' ')}...
         </Typography>
+
         
         
         {/* <a href="#" className="inline-block"> */}
        
-          <Button variant="text" className="flex items-center gap-2" onClick={()=>navigate(`/course-details?id=${courseId}`)}>
+          <Button variant="text" className="flex items-center gap-2 bg-[#e4f5eb]" onClick={()=>navigate(`/course-details?id=${courseId}`)}>
             Learn More
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -80,7 +108,7 @@ const CoursePageCard = ({ course, image,college, duration , is_admin ,is_consult
                     
           <div className='flex'>
 
-          <Button variant="text" className="flex items-center gap-2">
+          <Button variant="text" className="flex items-center gap-2" onClick={openModal}>
             Edit
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -116,8 +144,42 @@ const CoursePageCard = ({ course, image,college, duration , is_admin ,is_consult
           </Button>
           </div>
           )}
+          {is_admin &&
+          <Button variant="text" className="flex items-center gap-2" onClick={handleCourse}>
+            {
+              is_active ? 'Block' : 'Unblock'
+            }
+          
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={2}
+            className="h-4 w-4"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3"
+            />
+          </svg>
+        </Button>}
       </CardBody>
     </Card>
+    {isModalOpen && (
+        <EditCourseModal
+          course={course}
+          courseId={courseId}
+          image={image}
+          college={college}
+          duration={duration}
+          country={country}
+          description={description}
+          closeModal={closeModal} // Pass the closeModal function to close the modal
+          updateChanges={updateChanges}
+        />
+      )}
     </div>
   )
 }

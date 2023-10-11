@@ -76,7 +76,7 @@ const FilterDrawer = ({ countryFilter, courseTypeFilter, updateCountryFilter, up
     }, []); // Empty dependency array to run this effect only once when the component mounts
   return (
     <div>
-        <Button onClick={openDrawer} className="bg-gray-200 text-black rounded-sm md:ml-16 ml-3 md:mt-7 mt-4"><i className="fa fa-filter"></i>filter</Button>
+        <Button onClick={openDrawer} className="bg-white  text-black rounded-sm md:ml-16 ml-3 md:mt-7 mt-4"><i className="fa fa-filter"></i>filter</Button>
       <Drawer open={open} onClose={closeDrawer}>
         <div className="mb-2 flex items-center justify-between p-4">
           <Typography variant="h5" color="blue-gray">

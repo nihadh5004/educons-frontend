@@ -69,7 +69,7 @@ const AdminNavbar = () => {
                     Blogs
                     <div className='absolute inset-x-0 bottom-0 h-1 bg-[#20B486] transform scale-x-0 origin-left transition-transform group-hover:scale-x-100'></div>
                     </li>
-                    <li className='group relative px-3 py-2 text-sm text-white ' style={{ cursor: 'pointer' }}  >
+                    <li className='group relative px-3 py-2 text-sm text-white ' style={{ cursor: 'pointer' }} onClick={()=>navigate('/consultant-request-list')} >
                     Applications
                     <div className='absolute inset-x-0 bottom-0 h-1 bg-[#20B486] transform scale-x-0 origin-left transition-transform group-hover:scale-x-100'></div>
                     </li>

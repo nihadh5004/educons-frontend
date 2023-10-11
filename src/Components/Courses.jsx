@@ -7,7 +7,7 @@ const Courses = () => {
   return (
     <div>
         <NavBar/>
-        <CoursesPage is_admin={false}/>
+        <CoursesPage is_admin={false} is_consultancy={false}/>
         <Footer/>
     </div>
   )

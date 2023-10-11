@@ -22,10 +22,15 @@ const CoursesPage = ({is_admin ,is_consultancy}) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [active, setActive] = React.useState(1);
   const userId =useSelector((state) => state.user.userId);
+  const [trigger,setTrigger]=useState(false)
   const handleSearchInputChange = (event) => {
     const { value } = event.target;
     setSearchQuery(value);
-
+    
+    
+    // Set the currentPage to 1 when searching
+    setActive(1);
+    
     // Filter the courses based on the current search query (value)
     const filteredCourses = originalCourses.filter((course) =>
       course.name.toLowerCase().includes(value.toLowerCase())
@@ -39,6 +44,9 @@ const CoursesPage = ({is_admin ,is_consultancy}) => {
     });
   };
   
+  const updateChanges=()=>{
+    setTrigger(!trigger)
+  }
   
   const deleteCourse = (deletedCourseId) => {
     // Filter out the course with the specified ID
@@ -49,7 +57,19 @@ const CoursesPage = ({is_admin ,is_consultancy}) => {
       console.log(updatedCourses);
   };
 
-
+  const updateCourseIsActive = (courseId, isActive) => {
+    // Find the course in the coursesData state and update its is_active property
+    setCoursesData((prevCoursesData) => {
+      const updatedCourses = prevCoursesData.courses.map((course) => {
+        if (course.id === courseId) {
+          return { ...course, is_active: isActive };
+        }
+        return course;
+      });
+  
+      return { ...prevCoursesData, courses: updatedCourses };
+    });
+  };
 
   const updateCountryFilter = (newFilter) => {
     setCountryFilter(newFilter);
@@ -87,6 +107,7 @@ useEffect(() => {
         },
         withCredentials: true,
       });
+      
 
       const courses = response.data;
       setCoursesData({
@@ -105,7 +126,7 @@ useEffect(() => {
   };
 
   fetchCoursesData();
-}, []) // Empty dependency array to ensure the request is made only once  
+}, [trigger]) // Empty dependency array to ensure the request is made only once  
 :
   useEffect(() => {
     const fetchCoursesData = async () => {
@@ -117,15 +138,21 @@ useEffect(() => {
           withCredentials: true,
         });
 
-        const courses = response.data;
-        setCoursesData({
-          courses,
+        const allCourses = response.data;
+
+        // Filter courses based on is_active when both is_admin and is_consultancy are false
+        const filteredCourses = (is_admin || is_consultancy)
+          ? allCourses
+          : allCourses.filter(course => course.is_active);
+          
+          setCoursesData({
+          courses : filteredCourses,
           currentPage: 1,
           itemsPerPage: 2,
-          totalPages: Math.ceil(courses.length / 2),
+          totalPages: Math.ceil(filteredCourses.length / 2),
         });
-        setOriginalCourses(courses);
-        console.log(courses);
+        setOriginalCourses(filteredCourses);
+        console.log(filteredCourses);
         setIsLoading(false);
       } catch (error) {
         console.error("Error fetching courses:", error);
@@ -179,7 +206,7 @@ useEffect(() => {
   
   return (
     <div className="bg-[#e4f5eb]">
-      <div className="flex justify-between w-full">
+      <div className="md:flex justify-between w-full">
 
       <FilterDrawer
         countryFilter={countryFilter}
@@ -188,16 +215,19 @@ useEffect(() => {
         updateCourseTypeFilter={updateCourseTypeFilter}
         updateConsultancyFilter={updateConsultancyFilter}
       />
-      <form action="" className='bg-white border  max-w-[250px] md:p-2 p-2 mb-2 mr-5 md:mr-16 md:mt-7   mt-4  shadow-lg rounded-lg flex justify-between'>
+      <div className="px-2">
+
+      <form action="" className='bg-white border  md:w-[400px]  md:p-2 p-2   mb-2  md:mr-16 md:mt-7   mt-4  shadow-lg rounded-lg flex justify-between'>
       <input
           className='bg-white w-full outline-none focus:outline-none' 
           type="text"
           placeholder="Search for courses..."
           value={searchQuery}
           onChange={handleSearchInputChange}
-        />
-         <i className="fa fa-search fa-lg mt-1"></i>
+          />
+         <i className="fa fa-search fa-lg mt-1 mr-2 "></i>
         </form>
+      </div>
       
       </div>
       <div className="md:p-4 p-2">
@@ -210,13 +240,18 @@ useEffect(() => {
             <CoursePageCard
               key={course.id}
               course={course.name}
+              country = {course.college.country.name}
               college = {course.college.name}
-              image={`http://127.0.0.1:8000/${course.image}`}
+              image={`http://127.0.0.1:8000${course.image}`}
               duration={course.duration}
+              description={course.description}
               is_admin = {is_admin}
               is_consultancy = {is_consultancy}
               courseId={course.id}
+              is_active={course.is_active}
               deleteCourse={deleteCourse}
+              updateCourseIsActive={updateCourseIsActive}
+              updateChanges={updateChanges}
             />
           ))
         )}

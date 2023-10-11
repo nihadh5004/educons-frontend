@@ -9,7 +9,7 @@ import { Button } from "@material-tailwind/react";
 import { IconButton } from "@material-tailwind/react";
 
 const NavBar = () => {
-    const { isAuthenticated, username, role } = useSelector((state) => state.user);
+    const { isAuthenticated, username, role ,student } = useSelector((state) => state.user);
 
 
     const [toggle,setToggle] =useState(false)
@@ -41,7 +41,7 @@ const NavBar = () => {
     <div>
 
     
-    <div className='w-full h-[80px] bg-white border-b  fixed z-50  '>
+    <div className='w-full h-[80px] bg-white border-b  fixed z-50 shadow-lg'>
         <div className='md:max-w-[1240px]  max-w-[330px] w-full h-full flex justify-between items-center m-auto'>
 
             <h1 className='h-[25px] text-2xl text-[#20B486] font-bold' style={{ cursor: 'pointer' }} onClick={()=>navigate('/')}>EduCons</h1>
@@ -60,7 +60,7 @@ const NavBar = () => {
                     Blogs
                     <div className='absolute inset-x-0 bottom-0 h-1 bg-[#20B486] transform scale-x-0 origin-left transition-transform group-hover:scale-x-100'></div>
                     </li>
-                    <li className='group relative px-3 py-2 text-sm ' style={{ cursor: 'pointer' }} >
+                    <li className='group relative px-3 py-2 text-sm ' style={{ cursor: 'pointer' }}   onClick={()=>{student ? navigate('/student-chat-users') : navigate('/chat-students')}}>
                     Community
                     <div className='absolute inset-x-0 bottom-0 h-1 bg-[#20B486] transform scale-x-0 origin-left transition-transform group-hover:scale-x-100'></div>
                     </li>

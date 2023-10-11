@@ -171,7 +171,7 @@ const closeModal = () => {
               id={blog.id}
               heading={blog.heading}
               user={blog.username}
-              image={`${baseUrl}/${blog.image}`}
+              image={`${baseUrl}${blog.image}`}
               created_at={blog.created_date}
               content={blog.truncated_content}
               is_admin={is_admin}

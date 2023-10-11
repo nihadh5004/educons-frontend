@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import senecaImg from '../../assets/Seneca-4.png'
 import axios from 'axios'; 
 import { baseUrl } from '../../Store/BaseUrl';
+import { useSelector ,useDispatch } from 'react-redux';
+
 import {
     Tabs,
     TabsHeader,
@@ -12,6 +14,8 @@ import {
    
    
 const CourseDetailPage = () => {
+    
+  const { userId } = useSelector((state) => state.user);
     const [courseDetails, setCourseDetails] = useState({
         course:[],
         collegeName:'',
@@ -86,6 +90,36 @@ const CourseDetailPage = () => {
 
       
       console.log(courseDetails.collegeName)
+
+      const handleUserRequest = async () => {
+        try {
+          // Create a request object with the user's ID and the course's ID
+          const requestData = {
+            user: userId, 
+            course: id,    
+          };
+    
+          // Send a POST request to your API endpoint to create the UserRequest
+          const response = await axios.post(`${baseUrl}/create-user-request/`, requestData, {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            withCredentials: true,
+          });
+    
+          // Check the response status and handle it as needed
+          if (response.status === 201) {
+            
+            console.log('Request created successfully');
+          } else {
+            // Handle other status codes, such as validation errors
+            console.error('Request creation failed with status:', response.status);
+          }
+        } catch (error) {
+          console.error('Error creating request:', error);
+        }
+      };      
+     
     return (
     <div>
 
@@ -123,7 +157,7 @@ const CourseDetailPage = () => {
   <p className="text-2xl font-bold">How to apply?</p>
   <p className='text-lg'>Once you’ve done your research and identified the scholarships that you are interested in, it’s time to complete the applications. Remember that most are competitive, so there’s no guarantee that, however good a match you think you are, that you will be successful. It’s sensible to apply for more than you need. So to help you stand out from other applicants we're here. </p>
   <p className='text-sm text-gray-500 mt-5'>CLick on the below button to get a thoroughout assistance in you admission procedure</p>
-  <button className='px-4 py-2 mt-3 border w-full bg-green-500'>Click Here</button>
+  <button className='px-4 py-2 mt-3 border w-full bg-green-500' onClick={handleUserRequest} >Click Here</button>
 </div>
 
 <div className='md:px-16 md:mt-11 mt-3 p-2'>

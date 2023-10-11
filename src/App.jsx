@@ -24,6 +24,12 @@ import ConsultancyHome from './Components/ConsultancyComponents/ConsultancyHome'
 import ConsultancyCourses from './Components/ConsultancyComponents/ConsultancyCourses';
 import AdminLoginPage from './Components/LoginComponents/AdminLoginPage';
 import ConsultancySignup from './Components/ConsultancySignup';
+import UserRequest from './Components/ConsultancyComponents/UserRequest';
+import ConsultantRequestsList from './Components/AdminComponents/ConsultantRequestComponents/ConsultantRequestsList';
+import StudentsList from './Components/ConsultancyComponents/StudentComponents/StudentsList';
+import ChatStudents from './Components/ChatComponents/ChatStudents';
+import Chat from './Components/ChatComponents/Chat'
+import StudentChatWithUser from './Components/ChatComponents/StudentChatWithUser';
 const App = () => {
   return (
     
@@ -41,11 +47,18 @@ const App = () => {
         <Route path="/course-details"  element={<CourseDetail/>} />
         <Route path="/blogs"  element={<Blogs/>} />
         <Route path="/blog-details"  element={<BlogDetail/>} />
+        <Route path="/chat-students"  element={<ChatStudents/>} />
+        <Route path="/student-chat-users"  element={<StudentChatWithUser/>} />
+        <Route path="/chat-page"  element={<Chat/>} />
         
         <Route path="/consultancy-dashboard"  element={<ProtectedRoute element={<ConsultancyHome/>} requiredRole={800} />}
         />
+        <Route path="/user-requests"  element={<ProtectedRoute element={<UserRequest/>} requiredRole={800} />}
+        />
         
         <Route path="/consultancy-courses"  element={<ProtectedRoute element={<ConsultancyCourses/>} requiredRole={800} />}
+        />
+        <Route path="/consultancy-students"  element={<ProtectedRoute element={<StudentsList/>} requiredRole={800} />}
         />
         
         <Route
@@ -65,6 +78,10 @@ const App = () => {
         <Route
               path="/courseslist"
               element={<ProtectedRoute element={<Courseslist />} requiredRole={200} />}
+            />        
+        <Route
+              path="/consultant-request-list"
+              element={<ProtectedRoute element={<ConsultantRequestsList />} requiredRole={200} />}
             />        
         <Route
               path="/addcourse"
