@@ -30,16 +30,19 @@ import StudentsList from './Components/ConsultancyComponents/StudentComponents/S
 import ChatStudents from './Components/ChatComponents/ChatStudents';
 import Chat from './Components/ChatComponents/Chat'
 import StudentChatWithUser from './Components/ChatComponents/StudentChatWithUser';
+import LoginProtection from './Store/LoginProtection';
 const App = () => {
   return (
     
     <Router>
       <Routes>
         <Route path="/" exact element={<Home/>} />
-        <Route path="/signup"  element={<Signup/>} />
+        <Route path="/signup"  element={<LoginProtection element={<Signup/>} requiredRole={''} />}
+        />
         <Route path="/consultancy-signup"  element={<ConsultancySignup/>} />
         <Route path="/otpconfirmation"  element={<OtpConfirmation/>} />
-        <Route path="/login"  element={<Login/>} />
+        <Route path="/login"  element={<LoginProtection element={<Login/>} requiredRole={''} />}
+         />
         <Route path="/admin-login"  element={<AdminLoginPage/>} />
         <Route path="/consultancy-login"  element={<ConsultancyLoginPage/>} />
         <Route path="/profile"  element={<Profile/>} />

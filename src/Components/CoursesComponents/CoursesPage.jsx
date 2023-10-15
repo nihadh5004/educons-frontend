@@ -12,7 +12,7 @@ const CoursesPage = ({is_admin ,is_consultancy}) => {
   const [coursesData, setCoursesData] = useState({
     courses: [],
     currentPage: 1,
-    itemsPerPage: 2,
+    itemsPerPage: 5,
     totalPages: 0,
   });
   const [isLoading, setIsLoading] = useState(true);
@@ -39,8 +39,8 @@ const CoursesPage = ({is_admin ,is_consultancy}) => {
     setCoursesData({
       courses: filteredCourses,
       currentPage: 1,
-      itemsPerPage: 2,
-      totalPages: Math.ceil(filteredCourses.length / 2),
+      itemsPerPage: 5,
+      totalPages: Math.ceil(filteredCourses.length / 5),
     });
   };
   
@@ -113,8 +113,8 @@ useEffect(() => {
       setCoursesData({
         courses,
         currentPage: 1,
-        itemsPerPage: 2,
-        totalPages: Math.ceil(courses.length / 2),
+        itemsPerPage: 5,
+        totalPages: Math.ceil(courses.length / 5),
       });
       setOriginalCourses(courses);
       console.log(courses);
@@ -148,8 +148,8 @@ useEffect(() => {
           setCoursesData({
           courses : filteredCourses,
           currentPage: 1,
-          itemsPerPage: 2,
-          totalPages: Math.ceil(filteredCourses.length / 2),
+          itemsPerPage: 5,
+          totalPages: Math.ceil(filteredCourses.length / 5),
         });
         setOriginalCourses(filteredCourses);
         console.log(filteredCourses);
@@ -195,8 +195,8 @@ useEffect(() => {
     setCoursesData({
       courses: filteredCourses,
       currentPage: 1,
-      itemsPerPage: 2,
-      totalPages: Math.ceil(filteredCourses.length / 2),
+      itemsPerPage: 5,
+      totalPages: Math.ceil(filteredCourses.length / 5),
     });
   }, [countryFilter, courseTypeFilter, searchQuery ,originalCourses , consultancyFilter ]);
 

@@ -4,12 +4,14 @@ import { useLocation } from 'react-router-dom';
 import { w3cwebsocket as WebSocket } from 'websocket';
 import { baseUrl } from '../../Store/BaseUrl';
 import axios from 'axios';
-
+import './Chat.css'
 const ChatPage = ({id}) => {
   const { student } = useSelector((state) => state.user);
   const user_id = useSelector((state) => state.user.userId);
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
+  const studentName = queryParams.get('student_name');
+
   let userId, studentId;
 
   if (student) {
@@ -133,7 +135,7 @@ return (
     student ?
     <div className="h-[540px] flex flex-col">
     {/* You now have a WebSocket connection in wsClient */}
-    <div className="flex-grow overflow-y-auto px-4 py-8">
+    <div className="flex-grow overflow-y-auto px-4 py-8 custom-scrollbar">
       {messages.map((message, index) => (
         <div
           key={index}
@@ -189,8 +191,8 @@ return (
     </div>
   </div> 
   :
-  <div className="container mx-auto" >
-  <div className="py-6 h-screen">
+  <div className="  mx-auto mt-0" >
+  <div className="py-2 w-full ">
     <div className="flex   rounded shadow-lg h-full">
         <div className="w-full border flex flex-col">
         {/* Right panel header */}
@@ -201,7 +203,7 @@ return (
               </div>
               <div className="ml-4">
                 <p className="text-grey-darkest">
-                  {studentId}
+                  {studentName}
                 </p>
                 <p className='text-sm text-gray-500'>Recently Active</p>
               </div>
@@ -216,8 +218,8 @@ return (
             
 
             {/* Info message */}
-              <div className="flex justify-center mb-4">
-                <div className="rounded py-2 mt-2 px-4" style={{ backgroundColor: '#FCF4CB' }}>
+              <div className="flex justify-center md:px-0 px-3 mb-4">
+                <div className="rounded py-2 mt-2 px-6" style={{ backgroundColor: '#FCF4CB' }}>
                   <p className="text-xs ">
                     Messages to this chat and calls are now secured with end-to-end encryption. 
                   </p>
@@ -228,60 +230,58 @@ return (
 
 
 
-            <div className="h-[550px] flex flex-col">
-              {/* You now have a WebSocket connection in wsClient */}
-              <div className="flex-grow overflow-y-auto px-4 py-8">
-                {messages.map((message, index) => (
-                  <div
-                    key={index}
-                    className={`flex flex-col mb-4 ${ student ?
+              <div className="relative  md:h-[536px]  h-[476px] flex flex-col">
+  {/* You now have a WebSocket connection in wsClient */}
+  <div className="flex-grow overflow-y-auto px-4 py-8 custom-scrollbar">
+    {messages.map((message, index) => (
+      <div
+        key={index}
+        className={`flex flex-col mb-4 ${
+          student
+            ? message.sender === studentId
+              ? 'items-end'
+              : 'items-start'
+            : message.sender === userId
+            ? 'items-end'
+            : 'items-start'
+        }`}
+      >
+        <div
+          className={`rounded-lg p-2 max-w-md ${
+            student
+              ? message.sender === studentId
+                ? 'bg-green-500 text-white'
+                : 'bg-blue-500 text-white'
+              : message.sender === userId
+              ? 'bg-green-500 text-white'
+              : 'bg-blue-500 text-white'
+          }`}
+        >
+          <div className="text-lg">{message.message_content}</div>
+        </div>
+        <div className="text-xs text-gray-400 mt-1 ml-2">
+          {getTimeDifference(message.timestamp)}
+        </div>
+      </div>
+    ))}
+  </div>
+  <div className="px-2 border-t flex bg-[#DAD3CC] py-2 absolute bottom-0 right-0 left-0">
+    <input
+      className="border rounded-full p-2 w-full focus:outline-none shadow-lg"
+      type="text"
+      placeholder="Type your message..."
+      value={messageInput}
+      onChange={(e) => setMessageInput(e.target.value)}
+    />
+    <button
+      className="ml-4 bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-blue-600"
+      onClick={handleSendMessage}
+    >
+      Send
+    </button>
+  </div>
+</div>
 
-                      message.sender === studentId ? 'items-end' : 'items-start':
-
-                      message.sender === userId ? 'items-end' : 'items-start'
-                    }`}
-                  >
-                  <div
-                    className={`rounded-lg p-2 max-w-md ${ student ?
-                      message.sender === studentId
-                        ? 'bg-green-500 text-white'
-                        : 'bg-blue-500 text-white'
-                      :
-                      message.sender === userId
-                        ? 'bg-green-500 text-white'
-                        : 'bg-blue-500 text-white'
-                    }`}
-                  >
-                  <div className='text-lg'>
-
-                      {message.message_content} 
-                  </div>
-
-                </div>
-                <div className="text-xs text-gray-400 mt-1 ml-2">
-                  
-                  {getTimeDifference(message.timestamp)}
-
-                </div>
-              </div>
-              ))}
-              </div>
-                <div className="bg-white p-2  border-t flex bg-[#DAD3CC]">
-                  <input
-                  className="border rounded p-2 w-full  focus:outline-none  shadow-lg"
-                  type="text"
-                  placeholder="Type your message..."
-                  value={messageInput}
-                  onChange={(e) => setMessageInput(e.target.value)}
-                  />
-                  <button
-                  className="ml-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-                  onClick={handleSendMessage}
-                  >
-                  Send
-                  </button>
-                </div>
-              </div> 
             {/* End of example incoming message */}
             {/* Repeat similar code for other messages */}
           </div>

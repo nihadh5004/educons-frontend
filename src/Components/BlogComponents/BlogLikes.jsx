@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { AiOutlineLike, AiFillLike } from 'react-icons/ai';
+import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
 import axios from 'axios';
 import { useSelector } from 'react-redux'; // Import useSelector from react-redux
 
@@ -47,13 +47,13 @@ const BlogLikes = ({ blogId }) => {
 
   // Render the like button based on whether the user has already liked the blog
   return (
-    <div className='flex '>
+    <div className=' '>
       {liked ? (
-        <AiFillLike size={20} onClick={handleLike} className='cursor-pointer' />
+        <AiFillHeart size={20} onClick={handleLike} className='cursor-pointer' />
       ) : (
-        <AiOutlineLike size={20} onClick={handleLike} className='cursor-pointer' />
+        <AiOutlineHeart size={20} onClick={handleLike} className='cursor-pointer' />
       )}
-      <span>{likesCount} </span>
+      {/* <span className=''>{likesCount} likes </span> */}
     </div>
   );
 };

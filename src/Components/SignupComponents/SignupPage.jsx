@@ -42,11 +42,11 @@ const SignupPage = ({is_consultancy}) => {
                           if(response.status === 201) {
                             console.log(response.data);
                           // Clear the form fields after successful registration if needed
-                          setUsername('');
-                          setEmail('');
-                          setPassword('');
-                          setConfirmPassword('');
-                          navigate(`/otpconfirmation?username=${username}`)
+                            setUsername('');
+                            setEmail('');
+                            setPassword('');
+                            setConfirmPassword('');
+                            navigate(`/otpconfirmation?username=${username}`)
                           }else if(response.status === 400){
                               toast.error(response.message);
                           }

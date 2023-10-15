@@ -9,7 +9,10 @@ import ChatPage from './ChatPage';
 const StudentChatWithUserPage = () => {
     const { userId } = useSelector((state) => state.user);
     const [chattedUsers, setChattedUsers] = useState([]);
-    const[selectedChat,setSelectedChat] = useState(null)
+    const[selectedChat,setSelectedChat] = useState({
+      id: null,
+      username:null,
+    })
     const navigate = useNavigate();
     useEffect(() => {
         const fetchChattedUsers = async () => {
@@ -17,6 +20,7 @@ const StudentChatWithUserPage = () => {
                 const response = await axios.get(`${baseUrl}/users-chatted-with/${userId}/`);
                 if (response.status === 200) {
                     setChattedUsers(response.data);
+                    console.log(response.data)
                 }
             } catch (error) {
                 console.error('Error fetching chatted users:', error);
@@ -44,7 +48,6 @@ const StudentChatWithUserPage = () => {
                     </div>
                     <div>
 
-                <input type="text" className="w-full px-2 py-2 text-sm rounded-lg" placeholder="Search  chat" />               
                     </div>
                  </div>
               </div>
@@ -63,7 +66,10 @@ const StudentChatWithUserPage = () => {
                   </div>
                   <div className="ml-4 flex-1 border-b border-grey-lighter py-4">
                     <div key={user.id} className="flex items-bottom justify-between">
-                      <p className="text-grey-darkest" onClick={()=>setSelectedChat(user.id)}>
+                      <p className="text-grey-darkest" onClick={()=>setSelectedChat({
+                        id:user.id,
+                        username:user.username,
+                      })}>
                       {user.username}
                       </p>
                       <p className="text-xs text-grey-darkest">
@@ -89,11 +95,9 @@ const StudentChatWithUserPage = () => {
                   </div>
                   <div className="ml-4">
                     <p className="text-grey-darkest">
-                      New Movie! Expendables 4
+                      {selectedChat.username}
                     </p>
-                    <p className="text-grey-darker text-xs mt-1">
-                      Andrés, Tom, Harrison, Arnold, Sylvester
-                    </p>
+                    
                   </div>
                 </div>
 
@@ -135,7 +139,7 @@ const StudentChatWithUserPage = () => {
 
 
 
-                  {selectedChat && <ChatPage id={selectedChat}/>}
+                  {selectedChat && <ChatPage id={selectedChat.id}/>}
                   {/* End of example incoming message */}
                   {/* Repeat similar code for other messages */}
                 </div>

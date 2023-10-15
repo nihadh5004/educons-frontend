@@ -34,6 +34,7 @@ const LoginPage = () => {
         const refreshToken = response.data.refresh;
         const role = response.data.is_superuser ? 100 : false ;
         const student = response.data.is_student;
+        const premium = response.data.is_premium;
 
         const userId = response.data.id;
 
@@ -43,7 +44,7 @@ const LoginPage = () => {
         localStorage.setItem('refreshToken', refreshToken);
         axios.defaults.headers.common['Authorization'] = `Bearer ${response.data['access']}`;
 
-        dispatch(setUserData({ username, role, userId ,student }));
+        dispatch(setUserData({ username, role, userId ,student , premium }));
         
         navigate('/');
       } else {
@@ -150,8 +151,7 @@ const LoginPage = () => {
                 role="button"
                 onClick={()=>navigate('/admin-login')}
               >
-                {/* <!-- Facebook --> */}
-                {/* <i className='fa fa-google px-3'></i> */}
+                
                 Admin Login
               </a>
            

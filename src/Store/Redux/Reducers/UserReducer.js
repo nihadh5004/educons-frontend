@@ -18,7 +18,15 @@ const initialState = {
           role: action.payload.role,
           student: action.payload.student,
           userId : action.payload.userId,
+          premium : action.payload.premium,
+
         };
+      case 'UPDATE_PREMIUM':
+        console.log('updating');
+      return {
+        ...state,
+        premium: action.payload,
+      };
       case 'CLEAR_USER_DATA':
         console.log('clearing')
         localStorage.clear();

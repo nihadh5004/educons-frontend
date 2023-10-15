@@ -21,6 +21,7 @@ const BlogDetailPage = ({is_admin}) => {
         const response = await axios.get(`${baseUrl}/blogs/${id}/`);
         // Set blog data...
         setBlogData(response.data);
+
         console.log(response.data);
         setIsLoading(false);
       } catch (error) {
@@ -56,7 +57,7 @@ const BlogDetailPage = ({is_admin}) => {
       ) : (
         <div className='bg-[#E9F8F3B2] w-full'>
           <div className='flex justify-center py-4 w-full '>
-            <img src={`${baseUrl}/${blogData.image}`} alt="" className='md:w-5/6 p-2 md:h-[500px]' />
+            <img src={`${baseUrl}${blogData.image}`} alt="" className='md:w-5/6 p-2 md:h-[500px]' />
           </div>
           <div className='md:ml-16 md:px-16 md:py-3 p-2'>
             <div className='flex justify-between'>

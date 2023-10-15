@@ -5,11 +5,13 @@ import {
     Typography,
     IconButton,
   } from "@material-tailwind/react";
-import {FaRegCommentDots} from 'react-icons/fa'
+import {FaRegComment} from 'react-icons/fa'
 import { useSelector } from 'react-redux'; // Import useSelector from react-redux
 
 import axios from 'axios'; // Import Axios
 import { baseUrl } from '../../Store/BaseUrl';
+import CommentLikes from './CommentLikes';
+import CommentReply from './CommentReply';
 const CommentDrawer = ({blogId}) => {
 const [openRight, setOpenRight] = React.useState(false);
 const [commentText, setCommentText] = useState(''); // State to store the comment text
@@ -79,11 +81,11 @@ const [comments, setComments] = useState([]); // State to store comments
     <div>
         <div className='flex'>
 
-            <FaRegCommentDots
+            <FaRegComment
               className='cursor-pointer'
               size={20}
               onClick={openDrawerRight}/>
-              <span className='ml-1  '>{comments.length}</span>
+              {/* <span className='ml-1  '>{comments.length}</span> */}
               
         </div>
 
@@ -133,6 +135,11 @@ const [comments, setComments] = useState([]); // State to store comments
 
                 </div>
               <p className='ml-6 mt-2'>{comment.comment}</p>
+              <div className='flex '>
+
+              {/* <p className='ml-3 mt-3 '>  <CommentLikes/></p> */}
+              <p className='mt-3 ml-5 text-gray-500 w-2/3' style={{cursor:'pointer'}}><CommentReply id={comment.id}/></p>
+              </div>
             </div>
           ))}
         </div>
