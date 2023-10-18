@@ -1,107 +1,116 @@
-import React,{useState,useEffect} from 'react'
-import axios from 'axios';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
-
+import { PiArrowBendDownRightLight } from "react-icons/pi";
 import {
-    Collapse,
-    Button,
-    Card,
-    Typography,
-    CardBody,
-  } from "@material-tailwind/react";
-  import { baseUrl } from '../../Store/BaseUrl';
-const CommentReply = ({id}) => {
-    const [open, setOpen] = React.useState(false);
-    const [replyText, setReplyText] = useState('');
-    const [sending, setSending] = useState(false);
-    const { userId } = useSelector((state) => state.user);
-    const [replies, setReplies] = useState([]); // State to store comments
+  Collapse,
+  Button,
+  Card,
+  Typography,
+  CardBody,
+} from "@material-tailwind/react";
+import { baseUrl } from "../../Store/BaseUrl";
+const CommentReply = ({ id }) => {
+  const [open, setOpen] = React.useState(false);
+  const [replyText, setReplyText] = useState("");
+  const [sending, setSending] = useState(false);
+  const { userId } = useSelector((state) => state.user);
+  const [replies, setReplies] = useState([]); // State to store comments
 
-    const toggleOpen = () => setOpen((cur) => !cur);
+  const toggleOpen = () => setOpen((cur) => !cur);
 
-    const getComments = async () => {
-      try {
-        const response = await axios.get(`${baseUrl}/reply/?commentId=${id}`);
-        setReplies(response.data); // Update the comments state with the fetched data
-        console.log(response.data);
-      } catch (error) {
-        console.error('Error fetching comments:', error);
-      }
+  const getComments = async () => {
+    try {
+      const response = await axios.get(`${baseUrl}/reply/?commentId=${id}`);
+      setReplies(response.data); // Update the comments state with the fetched data
+      console.log(response.data);
+    } catch (error) {
+      console.error("Error fetching comments:", error);
+    }
+  };
+
+  // Use useEffect to fetch comments when the component mounts and when blogId changes
+  useEffect(() => {
+    getComments();
+  }, [id]);
+
+  const handleSendReply = () => {
+    setSending(true);
+    const data = {
+      text: replyText,
+      commentId: id,
+      userId: userId,
     };
-  
-    // Use useEffect to fetch comments when the component mounts and when blogId changes
-    useEffect(() => {
-      getComments();
-    }, [id]);
+    // Assuming you have an API endpoint to send the reply, replace 'YOUR_API_URL' with the actual URL.
+    axios
+      .post(`${baseUrl}/reply/`, data, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        withCredentials: true,
+      })
+      .then((response) => {
+        console.log("Reply sent successfully:", response.data);
+        // Reset the input field and update the state
+        setReplyText("");
+        const newComment = response.data;
+        setReplies((prevComments) => [...prevComments, newComment]);
+        setSending(false);
+      })
+      .catch((error) => {
+        console.error("Error sending reply:", error);
+        setSending(false);
+      });
+  };
+  const calculateTimeDifference = (timestamp) => {
+    const currentTime = new Date();
+    const commentTime = new Date(timestamp);
+    const timeDifference = currentTime - commentTime;
 
+    const seconds = Math.floor(timeDifference / 1000);
+    const minutes = Math.floor(seconds / 60);
+    const hours = Math.floor(minutes / 60);
+    const days = Math.floor(hours / 24);
 
-    const handleSendReply = () => {
-        setSending(true);
-        const data={
-            text : replyText,
-            commentId : id,
-            userId : userId ,
+    if (days > 0) {
+      return `${days} d ago`;
+    } else if (hours > 0) {
+      return `${hours} h ago`;
+    } else if (minutes > 0) {
+      return `${minutes} m ago`;
+    } else {
+      return `${seconds} s ago`;
+    }
+  };
+  return (
+    <>
+      <div className="flex ml-3" >
+        
+        <p onClick={toggleOpen} className={open ? "ml-2" : "ml-2"}>
+          {open ? <PiArrowBendDownRightLight color="black"  className="mt-3"/> : "Reply"}
+        </p>
+      </div>
 
-
-        }
-        // Assuming you have an API endpoint to send the reply, replace 'YOUR_API_URL' with the actual URL.
-        axios.post(`${baseUrl}/reply/`, data,{
-            headers: {
-              "Content-Type": "application/json",
-            },
-            withCredentials: true,
-          })
-          .then((response) => {
-            console.log('Reply sent successfully:', response.data);
-            // Reset the input field and update the state
-            setReplyText('');
-            const newComment = response.data;
-            setReplies((prevComments) => [...prevComments, newComment]);
-            setSending(false);
-          })
-          .catch((error) => {
-            console.error('Error sending reply:', error);
-            setSending(false);
-          });
-      };
-      const calculateTimeDifference = (timestamp) => {
-        const currentTime = new Date();
-        const commentTime = new Date(timestamp);
-        const timeDifference = currentTime - commentTime;
-    
-        const seconds = Math.floor(timeDifference / 1000);
-        const minutes = Math.floor(seconds / 60);
-        const hours = Math.floor(minutes / 60);
-        const days = Math.floor(hours / 24);
-    
-        if (days > 0) {
-          return `${days} d ago`;
-        } else if (hours > 0) {
-          return `${hours} h ago`;
-        } else if (minutes > 0) {
-          return `${minutes} m ago`;
-        } else {
-          return `${seconds} s ago`;
-        }
-      };
-    return (
-      <>
-      <p onClick={toggleOpen} className={open ? '' : ''}>{open ? 'Close' : 'Replies'}</p>
-
-      {open &&
-        <div className='flex mt-3'>
-        <input type="text"  className='w-[110px] border px-2' placeholder='Send Reply' value={replyText}
-            onChange={(e) => setReplyText(e.target.value)} />
-        <p className='ml-3' onClick={handleSendReply} disabled={sending}>Send</p>
-        </div>
-      }
-        <Collapse open={open}>
-          <Card className="my-4 mx-auto w-full">
-          {replies.map((reply, index) => (
-            <div
-              key={index}
-              className="bg-white rounded-lg shadow-lg p-3 mt-2 bg-[#e1e7e8]"
+      <Collapse open={open}>
+        <Card className=" bg--[#E9F8F3B2] mx-auto w-full ">
+          <div className="flex mt-3 mb-3 bg-white px-2 rounded-md shadow-sm ml-6">
+            <input
+              type="text"
+              className="w-full outline-none   py-2 px-1"
+              placeholder="Send Reply"
+              value={replyText}
+              onChange={(e) => setReplyText(e.target.value)}
+            />
+            <p
+              className="ml-3 mt-2"
+              onClick={handleSendReply}
+              disabled={sending}
             >
+              Send
+            </p>
+          </div>
+          {replies.map((reply, index) => (
+            <div key={index} className=" p-3 mt-2 ml-6">
               <div className="flex justify-between">
                 <div className="flex">
                   <svg
@@ -125,11 +134,10 @@ const CommentReply = ({id}) => {
               <div className="flex"></div>
             </div>
           ))}
-            
-             </Card>
-        </Collapse>
-      </>
-    );
-}
+        </Card>
+      </Collapse>
+    </>
+  );
+};
 
-export default CommentReply
+export default CommentReply;

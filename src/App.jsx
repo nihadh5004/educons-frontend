@@ -31,6 +31,7 @@ import ChatStudents from './Components/ChatComponents/ChatStudents';
 import Chat from './Components/ChatComponents/Chat'
 import StudentChatWithUser from './Components/ChatComponents/StudentChatWithUser';
 import LoginProtection from './Store/LoginProtection';
+import ConsultantConfimation from './Components/AccountConfirmComponents/ConsultantConfimation';
 const App = () => {
   return (
     
@@ -41,6 +42,7 @@ const App = () => {
         />
         <Route path="/consultancy-signup"  element={<ConsultancySignup/>} />
         <Route path="/otpconfirmation"  element={<OtpConfirmation/>} />
+        <Route path="/consultancy-confirmation"  element={<ConsultantConfimation/>} />
         <Route path="/login"  element={<LoginProtection element={<Login/>} requiredRole={''} />}
          />
         <Route path="/admin-login"  element={<AdminLoginPage/>} />

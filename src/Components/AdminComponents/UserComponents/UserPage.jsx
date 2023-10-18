@@ -51,7 +51,7 @@ const UserPage = () => {
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedTab, setSelectedTab] = useState('all');
     const [filtersTabs, setFiltersTabs] = useState([]);
-
+    const[trigger,setTrigger]=useState(false)
     useEffect(() => {
       const userlistData = async () => {
         try {
@@ -75,13 +75,7 @@ const UserPage = () => {
     }, []); // Empty dependency array to ensure the request is made only once
   
 
-    useEffect(() => {
-      // Filter user list when the selected tab changes
-      const filteredList = filterUserList(selectedTab);
-      setFiltersTabs(filteredList);
-      setCurrentPage(1);
-    }, [selectedTab]);
-  
+    
     const filterUserList = (tab) => {
       if (tab === 'all') {
         return userList;
@@ -137,9 +131,10 @@ const UserPage = () => {
         return user;
       });
 
+      
       // Update the local state with the modified user list
       setUserList(updatedUserList);
-
+      setTrigger(!trigger)
       // Handle success response (e.g., show a success message)
       console.log("User blocked successfully", response.data);
     } catch (error) {
@@ -170,12 +165,22 @@ const handleUnblockUser = (userId) => {
           return user;
         });
         setUserList(updatedUserList);
+        setTrigger(!trigger)
+
       })
       .catch((error) => {
         // Handle errors
       });
   };
   
+  
+  useEffect(() => {
+    // Filter user list when the selected tab changes
+    const filteredList = filterUserList(selectedTab);
+    setFiltersTabs(filteredList);
+    setCurrentPage(1);
+  }, [selectedTab,trigger]);
+
 
   return (
     <div>

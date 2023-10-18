@@ -9,7 +9,7 @@ import { baseUrl } from "../../Store/BaseUrl";
 import { useSelector } from "react-redux"; // Import useSelector from react-redux
 import { Button, IconButton, Typography } from "@material-tailwind/react";
 import { ArrowRightIcon, ArrowLeftIcon } from "@heroicons/react/24/outline";
-import blogImage from '../../assets/Creative thinking.gif'
+import blogImage from '../../assets/0728_1_Travel_blog.jpg'
 import swingImage from '../../assets/girl_on_a_swing.jpg'
 const BlogPage = ({ is_admin }) => {
   const [blogs, setBlogs] = useState([]); // State variable to store the blog data
@@ -49,10 +49,30 @@ const BlogPage = ({ is_admin }) => {
     setIsModalOpen(false);
   };
 
+
+  const title = "Worldwide Perspectives: Unveiling the Global Voices - Explore the Experiences of International Students!";
+const [displayedTitle, setDisplayedTitle] = useState('');
+const [currentIndex, setCurrentIndex] = useState(0);
+
+useEffect(() => {
+  const delay = 50; // Adjust the delay between letter appearances as needed
+
+  const intervalId = setInterval(() => {
+    if (currentIndex < title.length) {
+      setDisplayedTitle(prevTitle => prevTitle + title[currentIndex]);
+      setCurrentIndex(currentIndex + 1);
+    } else {
+      clearInterval(intervalId);
+    }
+  }, delay);
+
+  return () => {
+    clearInterval(intervalId);
+  };
+}, [currentIndex]);
   useEffect(() => {
     const fetchBlogs = async () => {
       try {
-        // Replace 'YOUR_BLOG_API_ENDPOINT' with the actual API endpoint to fetch blogs
         const response = await axios.get(`${baseUrl}/blogs/`, {
           headers: {
             "Content-Type": "application/json",
@@ -149,11 +169,11 @@ const BlogPage = ({ is_admin }) => {
               <img src={swingImage} alt="" className="md:w-2/3 h-full " />
           </div>
 
-  {/* <img
+  <img
     src={blogImage}
     alt=""
-    className=" h-full ml-auto "
-  /> */}
+    className=" h-full w-[500px] overflow-hidden mr-2 ml-auto "
+  />
         </div>
   <div className="absolute top-0 left-0  md:w-[1450px] w-[400px]   md:ml-16 ml-3 md:flex justify-between p-2">
     {!is_admin && (
@@ -205,7 +225,7 @@ const BlogPage = ({ is_admin }) => {
     )}
     <form
           action=""
-          className="bg-white border md:w-[350px] md:mt-4 md:p-2 p-2 mb-2 mr-11 mt-36 shadow-lg rounded-lg ml-auto flex justify-between"
+          className="bg-white border md:w-[350px] md:mt-4 md:p-2 p-2 mb-2 mr-11  mt-36 shadow-lg rounded-lg ml-auto flex justify-between"
         >
           <input
             className="bg-white w-full outline-none focus:outline-none"
@@ -217,6 +237,10 @@ const BlogPage = ({ is_admin }) => {
           <i className="fa fa-search fa-lg mt-1"></i>
         </form>
   </div>
+  <div className="absolute left-30 top-0" style={{ position: "absolute", top: "40%", left: "50%", transform: "translate(-60%, -50%)" }}>
+      <p className="font-bold text-3xl text-[#20B486]">{displayedTitle}</p>
+    </div>
+
 </div>
 
 

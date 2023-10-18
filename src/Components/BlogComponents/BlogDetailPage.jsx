@@ -6,6 +6,8 @@ import CommentDrawer from './CommentDrawer';
 import BlogLikes from './BlogLikes';
 import BlogSave from './BlogSave';
 import WatsappShareBlog from './WatsappShareBlog';
+import {FaRegComment} from 'react-icons/fa'
+import Comments from './Comments';
 
 const BlogDetailPage = ({is_admin}) => {
   const queryParams = new URLSearchParams(location.search);
@@ -47,6 +49,16 @@ const BlogDetailPage = ({is_admin}) => {
     }
   };
   
+  const scrollToComments = () => {
+    const commentsSection = document.getElementById('comments');
+    if (commentsSection) {
+      const yOffset = commentsSection.getBoundingClientRect().top + -100;
+      window.scrollTo({
+        top: window.scrollY + yOffset,
+        behavior: 'smooth', // Add smooth scrolling effect
+      });
+    }
+  };
   
   return (
     <div>
@@ -78,7 +90,7 @@ const BlogDetailPage = ({is_admin}) => {
               <div className='flex gap-3'>
 
               <BlogLikes blogId={id}/>
-              <CommentDrawer blogId={id}/>
+              <FaRegComment size={20} onClick={scrollToComments}/>
               <div className='flex ml-auto gap-3'>
 
               <WatsappShareBlog url={currentUrl} />
@@ -88,6 +100,9 @@ const BlogDetailPage = ({is_admin}) => {
             </div>
 
             <p className='mt-4 mb-5'>{blogData.content}</p>
+            <div id="comments" className="mt-4 mb-5">
+  <Comments blogId={id} />
+</div>
           </div>
         </div>
       )}

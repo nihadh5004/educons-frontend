@@ -11,7 +11,7 @@ const ChatPage = ({id}) => {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const studentName = queryParams.get('student_name');
-
+  const token = localStorage.getItem('accessToken')
   let userId, studentId;
 
   if (student) {
@@ -27,6 +27,29 @@ const ChatPage = ({id}) => {
   const [messages, setMessages] = useState([]);
   const [messageInput, setMessageInput] = useState('');
   const [isWsOpen, setIsWsOpen] = useState(false);
+  const [online,setOnline] = useState(false)
+
+  useEffect(()=>{
+    let other_side
+    if (student) {
+       other_side=userId
+    } else {
+       other_side=studentId
+    }
+
+    const fetchOnline = async () => {
+      try {
+        const response = await axios.get(`${baseUrl}/online-status/${other_side}/`);
+        console.log(response.data);
+        setOnline(response.data)
+      } catch (error) {
+        console.error('Error fetching :', error);
+      }
+    };
+    fetchOnline();
+
+  },[userId, studentId])
+
 
   useEffect(() => {
     // Function to fetch messages from the server
@@ -45,7 +68,7 @@ const ChatPage = ({id}) => {
   useEffect(() => {
     const connectToWebSocket = (userId, studentId) => {
       const roomName = `${userId}_${studentId}`;
-      const wsUrl = `ws://127.0.0.1:8000/ws/chat/${roomName}/`;
+      const wsUrl = `ws://127.0.0.1:8000/ws/chat/${roomName}/?token=${token}`;
       const client = new WebSocket(wsUrl);
 
       client.onopen = () => {
@@ -57,10 +80,13 @@ const ChatPage = ({id}) => {
       client.onmessage = (message) => {
         console.log('Received WebSocket message:', message);
         const data = JSON.parse(message.data);
+        console.log(data.type);
+        
         const message_get = data.message_content;
         console.log(data, 'return message user');
         setMessages((prevMessages) => [...prevMessages, data]);
         // Handle incoming messages from the WebSocket
+        
       };
 
       client.onerror = (error) => {
@@ -77,6 +103,7 @@ const ChatPage = ({id}) => {
     return () => {
       if (client) {
         client.close();
+          
       }
     };
   }, [userId, studentId]);
@@ -205,7 +232,7 @@ return (
                 <p className="text-grey-darkest">
                   {studentName}
                 </p>
-                <p className='text-sm text-gray-500'>Recently Active</p>
+                {online ? <span className="online-indicator">Online</span> : null}
               </div>
             </div>
 

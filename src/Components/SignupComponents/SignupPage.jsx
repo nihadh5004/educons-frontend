@@ -46,7 +46,12 @@ const SignupPage = ({is_consultancy}) => {
                             setEmail('');
                             setPassword('');
                             setConfirmPassword('');
-                            navigate(`/otpconfirmation?username=${username}`)
+                            if(is_consultancy == true){
+                              navigate(`/consultancy-confirmation?username=${username}`)
+                            }else{
+
+                              navigate(`/otpconfirmation?username=${username}`)
+                            }
                           }else if(response.status === 400){
                               toast.error(response.message);
                           }
