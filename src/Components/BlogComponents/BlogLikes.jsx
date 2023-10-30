@@ -22,21 +22,27 @@ const BlogLikes = ({ blogId }) => {
 
   // Function to handle the like action
   const handleLike = async () => {
-    try {
-      // Send a POST request to your API to like/unlike the blog post
-      const response = await axios.post(`${baseUrl}/bloglikes/`, { blogId, username });
-  
-      if (response.status === 201) {
-        // Liked successfully (201 status)
-        setLikesCount(likesCount + 1);
-        setLiked(true);
-      } else if (response.status === 200) {
-        // Unliked successfully (200 status)
-        setLikesCount(likesCount - 1);
-        setLiked(false);
+    if (!username){
+      setLiked(true)
+      
+    }else{
+
+      try {
+        // Send a POST request to your API to like/unlike the blog post
+        const response = await axios.post(`${baseUrl}/bloglikes/`, { blogId, username });
+    
+        if (response.status === 201) {
+          // Liked successfully (201 status)
+          setLikesCount(likesCount + 1);
+          setLiked(true);
+        } else if (response.status === 200) {
+          // Unliked successfully (200 status)
+          setLikesCount(likesCount - 1);
+          setLiked(false);
+        }
+      } catch (error) {
+        console.error('Error liking/unliking the blog:', error);
       }
-    } catch (error) {
-      console.error('Error liking/unliking the blog:', error);
     }
   };
 
@@ -48,12 +54,13 @@ const BlogLikes = ({ blogId }) => {
   // Render the like button based on whether the user has already liked the blog
   return (
     <div className=' '>
+      
       {liked ? (
-        <AiFillHeart size={20} onClick={handleLike} className='cursor-pointer' />
+        <AiFillHeart color='red' size={20} onClick={handleLike} className='cursor-pointer' />
       ) : (
         <AiOutlineHeart size={20} onClick={handleLike} className='cursor-pointer' />
       )}
-      {/* <span className=''>{likesCount} likes </span> */}
+      <span className=' ml-1'>{likesCount}  </span>
     </div>
   );
 };

@@ -12,19 +12,66 @@ import requestImg from '../../../assets/2476846-removebg-preview.png'
 import PendingsImg from '../../../assets/6931509-removebg-preview.png'
 import growthImg from '../../../assets/sl_033020_29450_24-removebg-preview.png'
 import { baseUrl } from '../../../Store/BaseUrl'
+import axiosInstance from '../../../Store/AxiosInterceptor'
 const HomePage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [data, setData] = useState([]);
   const { userId } = useSelector(
     (state) => state.user
   );
+  const [notification,setNotification] =useState(null)
+
+  const [wsClient, setWsClient] = useState(null);
+  const [isWsOpen, setIsWsOpen] = useState(false);
 
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
   };
 
   useEffect(() => {
-    axios
+    const connectToWebSocket = (userId) => {
+      const roomName = `1_${userId}`;
+      const wsUrl = `ws://13.51.204.237/ws/notification/${roomName}/`;
+      const client = new WebSocket(wsUrl);
+
+      client.onopen = () => {
+        console.log('WebSocket connection established');
+        setIsWsOpen(true);
+        setWsClient(client);
+      };
+
+      client.onmessage = (message) => {
+        console.log('Received WebSocket message:', message);
+        const data = JSON.parse(message.data);
+        console.log(data);
+        setNotification(data.notification_data)
+
+       
+        // Handle incoming messages from the WebSocket
+        
+      };
+
+      client.onerror = (error) => {
+        console.error('WebSocket error:', error);
+      };
+
+      return client;
+    };
+
+    // Establish WebSocket connection when the component mounts
+    const client = connectToWebSocket(userId);
+
+    // Cleanup function to close the WebSocket connection when the component unmounts
+    return () => {
+      if (client) {
+        client.close();
+          
+      }
+    };
+  }, [userId]);
+
+  useEffect(() => {
+    axiosInstance
       .get(`${baseUrl}/get-consultant-dashboard/${userId}/`)
       .then((response) => {
         // Handle successful response
@@ -36,15 +83,28 @@ const HomePage = () => {
         console.log(err);
       });
   }, []);
+
+ 
   return (
     <div>
-        <div className='border-b py-3 w-full '>
+        <div className='border-b py-3 w-full  '>
             <div className='w-full flex  '>
               <p className='md:ml-20 ml-5 font-medium md:text-2xl'> Consultancy Dashboard</p>
 
-            <button className='text-white bg-black md:text-sm text-xs p-2 ml-auto mr-3 rounded-lg' onClick={toggleModal}>Request For Student Approval</button>
+            <button className='text-white bg-black md:text-xs text-xs md:p-4 p-2  ml-auto mr-3 rounded-lg' onClick={toggleModal}>Request For Student Approval</button>
             </div>
+
         </div>
+        {notification && <div className='flex justify-between bg-green-50 py-3'>
+          <div className='p-2 ml-3'>
+          
+          {notification}
+          </div>
+          <div className='mr-5 p-2'>
+            <span><button onClick={()=>setNotification(null)} >x</button></span>
+          </div>
+           </div>}
+
         <div  className='md:flex'>
           <div>
 

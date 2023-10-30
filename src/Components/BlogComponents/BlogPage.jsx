@@ -11,6 +11,9 @@ import { Button, IconButton, Typography } from "@material-tailwind/react";
 import { ArrowRightIcon, ArrowLeftIcon } from "@heroicons/react/24/outline";
 import blogImage from '../../assets/0728_1_Travel_blog.jpg'
 import swingImage from '../../assets/girl_on_a_swing.jpg'
+import loadinglottie from '../Animation/loading.json'
+import Lottie  from 'lottie-react';
+
 const BlogPage = ({ is_admin }) => {
   const [blogs, setBlogs] = useState([]); // State variable to store the blog data
   const [isLoading, setIsLoading] = useState(true);
@@ -162,7 +165,7 @@ useEffect(() => {
   const currentBlogs = filteredBlogs.slice(indexOfFirstBlog, indexOfLastBlog);
 
   return (
-    <div className="bg-[#F2F5EB]">
+    <div className={`bg-${isLoading ? 'white' : '[#F2F5EB]'}`}>
       <div className="relative w-full">
         <div className=" md:h-[507px] h-[300px]  w-full flex bg-white">
           <div className="md:w-1/2">
@@ -172,7 +175,7 @@ useEffect(() => {
   <img
     src={blogImage}
     alt=""
-    className=" h-full w-[500px] overflow-hidden mr-2 ml-auto "
+    className="hidden md:flex h-full w-[500px] overflow-hidden mr-2 ml-auto "
   />
         </div>
   <div className="absolute top-0 left-0  md:w-[1450px] w-[400px]   md:ml-16 ml-3 md:flex justify-between p-2">
@@ -237,7 +240,7 @@ useEffect(() => {
           <i className="fa fa-search fa-lg mt-1"></i>
         </form>
   </div>
-  <div className="absolute left-30 top-0" style={{ position: "absolute", top: "40%", left: "50%", transform: "translate(-60%, -50%)" }}>
+  <div className="hidden  md:flex absolute left-30 top-0" style={{ position: "absolute", top: "40%", left: "50%", transform: "translate(-60%, -50%)" }}>
       <p className="font-bold text-3xl text-[#20B486]">{displayedTitle}</p>
     </div>
 
@@ -246,9 +249,9 @@ useEffect(() => {
 
       <div className="md:flex flex-wrap gap-5 md:p-2 p-4 md:ml-16 mt-5">
         {isLoading ? (
-          <div className="flex justify-center p-16 h-[900px]">
-            <Spinner />
-          </div>
+          <div className="flex justify-center items-center  p-16 h-[500px]">
+          <Lottie animationData={loadinglottie} className="w-1/6 "/>
+         </div>
         ) : (
           currentBlogs.map((blog) => (
             <BlogPageCard

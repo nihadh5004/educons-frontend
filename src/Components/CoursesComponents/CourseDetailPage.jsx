@@ -105,71 +105,94 @@ const CourseDetailPage = () => {
 
   return (
     <div>
-      <div className="relative">
-        <img
-          src={`${baseUrl}${courseDetails.course.image}`}
-          alt=""
-          className="md:h-[600px] h-[400px] w-full"
-        />
-        <div className="absolute top-32 left-1/2 transform -translate-x-1/2 bg-opacity-80 bg-white p-6 md:w-[500px]  w-[300px] rounded-lg">
-          <div className="">
-            <h1 className="md:text-2xl font-semibold">
-              {courseDetails.course.name}
-            </h1>
-            <h5 className="text-gray-600">{courseDetails.collegeName}</h5>
-          </div>
+      <div className="md:flex justify-center   mt-4 md:p-0 p-2">
+
+      <div className="p-4  md:mt-4  border-b mb-3 border-gray-500  md:w-2/3 flex justify-center">
+        <div>
+
+                      <h1 className="md:text-4xl text-2xl font-semibold">
+                        {courseDetails.course.name}
+                      </h1>
+                       <h5 className="text-gray-600 text-center w-full">{courseDetails.collegeName}</h5>
         </div>
-        <div className="absolute md:bottom-10 bottom-2 left-1/2 transform -translate-x-1/2 bg-opacity-80 bg-white p-8 w-5/6 md:w-2/3 rounded-lg">
-          <div className="flex justify-between">
-            <div>
-              <h1 className="md:text-lg text-sm font-semibold">Duration</h1>
-              <p>{courseDetails.course.duration} Years</p>
-            </div>
-            <div>
+        </div>
+      </div>
+      <div className="md:flex ">
+       <div className="md:w-2/3 md:p-0 p-2 ">
+
+        
+
+        <div className="md:px-16 py-3 p-2 mt-3">
+          <p className="text-2xl font-bold">About</p>
+          <p className="text-md">{courseDetails.course.description}</p>
+        </div>
+
+        <div className="md:px-16 py-3 p-2 mt-3">
+          <h1 className="text-2xl font-bold">Cost of Studying</h1>
+          <p className="text-md">{courseDetails.costOfStudying}</p>
+        </div>
+
+        <div className="md:px-16 py-3 p-2 mt-3">
+          <h1 className="text-2xl font-bold">Country Informations</h1>
+          <p className="text-md">{courseDetails.country.about}</p>
+        </div>
+
+        <div className="md:px-16 py-3 p-2 mt-3">
+          <p className="text-2xl font-bold">How to apply?</p>
+          <p className="text-md">
+            Once you’ve done your research and identified the scholarships that
+            you are interested in, it’s time to complete the applications.
+            Remember that most are competitive, so there’s no guarantee that,
+            however good a match you think you are, that you will be successful.
+            It’s sensible to apply for more than you need. So to help you stand
+            out from other applicants we're here.{" "}
+          </p>
+          
+          
+        </div>
+       
+       </div>
+
+        <div className="md:w-1/3  ml-auto p-5 shadow-lg mr-3">
+
+              <img
+                src={`${baseUrl}${courseDetails.course.image}`}
+                alt=""
+                className="md:h-[300px] h-[400px] w-full "
+              />
+              <div className="bg-white-500 "> 
+              
+
+              <div className="p-3">
+                <h1 className="md:text-lg text-sm font-semibold">Duration</h1>
+                <p>{courseDetails.course.duration} Years</p>
+              </div>
+
+              <div className="p-3">
               <h1 className="md:text-lg text-sm font-semibold">Cost</h1>
               <p>$22000</p>
             </div>
-            <div>
+
+            <div className="p-3">
               <h1 className="md:text-lg text-sm font-semibold">Course type</h1>
               <p>{courseDetails.courseType}</p>
             </div>
-          </div>
-        </div>
-      </div>
-      <div className="md:px-16 py-3 p-2 mt-3">
-        <p className="text-2xl font-bold">About</p>
-        <p className="text-lg">{courseDetails.course.description}</p>
-      </div>
-      <div className="md:px-16 py-3 p-2 mt-3">
-        <h1 className="text-2xl font-bold">Cost of Studying</h1>
-        <p>{courseDetails.costOfStudying}</p>
-      </div>
-      <div className="md:px-16 py-3 p-2 mt-3">
-        <h1 className="text-2xl font-bold">Country Informations</h1>
-        <p>{courseDetails.country.about}</p>
-      </div>
-      <div className="md:px-16 py-3 p-2 mt-3">
-        <p className="text-2xl font-bold">How to apply?</p>
-        <p className="text-lg">
-          Once you’ve done your research and identified the scholarships that
-          you are interested in, it’s time to complete the applications.
-          Remember that most are competitive, so there’s no guarantee that,
-          however good a match you think you are, that you will be successful.
-          It’s sensible to apply for more than you need. So to help you stand
-          out from other applicants we're here.{" "}
-        </p>
-        <p className="text-sm text-gray-500 mt-5">
-          CLick on the below button to get a thoroughout assistance in you
-          admission procedure
-        </p>
-        <button className="px-4 py-2 mt-9 w-full mb-7 " onClick={handleUserRequest}>
+
+            
+
+            <button className="px-4 py-2 mt-9 mb-7 " onClick={handleUserRequest}>
           <a class="relative inline-flex w-full items-center justify-center px-10 py-4 overflow-hidden font-mono font-medium tracking-tighter text-white bg-gray-800 rounded-lg group">
             <span class="absolute w-0 h-0 transition-all duration-500 ease-out bg-green-500 rounded-full group-hover:w-56 group-hover:h-56"></span>
             <span class="absolute inset-0 w-full h-full -mt-1 rounded-lg opacity-30 bg-gradient-to-b from-transparent via-transparent to-gray-700"></span>
-            <span class="relative">Button Text</span>
+            <span class="relative">Request Callback</span>
           </a>
         </button>
+
+
+              </div>
+        </div>
       </div>
+      
     </div>
   );
 };

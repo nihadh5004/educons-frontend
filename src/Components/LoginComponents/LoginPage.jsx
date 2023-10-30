@@ -20,8 +20,8 @@ const LoginPage = () => {
 
   const handleLogin = async () => {
     try {
-      setIsLoading(true); // Start loading
-
+      setIsLoading(true); // Start loading0
+0
       const loginData = {
         username: username,
         password: password,
@@ -42,7 +42,7 @@ const LoginPage = () => {
         localStorage.clear();
         localStorage.setItem('accessToken', accessToken);
         localStorage.setItem('refreshToken', refreshToken);
-        axios.defaults.headers.common['Authorization'] = `Bearer ${response.data['access']}`;
+        // axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
 
         dispatch(setUserData({ username, role, userId ,student , premium }));
         
@@ -72,7 +72,7 @@ const LoginPage = () => {
 
         {/* <!-- Right column container with form --> */}
         <div className=" md:ml-1 ml-16 md:w-8/12 w-full lg:ml-6 lg:w-5/12">
-            <h1 className='text-center  md:text-5xl py-4 mb-3 '>Login Here</h1>
+            <h1 className='text-center  md:text-5xl py-4 mb-3 font-medium'>LOGIN HERE</h1>
           {isLoading ? (
                 <div className="flex justify-center">
                   <Spinner />
@@ -107,8 +107,10 @@ const LoginPage = () => {
 
               {/* <!-- Forgot password link --> */}
               <a
-                href=""
+                
                 className="text-primary  transition duration-150 ease-in-out hover:text-primary-600 focus:text-primary-600 active:text-primary-700 dark:text-primary-400 dark:hover:text-primary-500 dark:focus:text-primary-500 dark:active:text-primary-600"
+                onClick={()=>navigate('/forgot-password')}
+                style={{cursor: 'pointer'}}
               >
                 Forgot password?
               </a>

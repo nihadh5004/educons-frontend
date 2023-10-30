@@ -1,4 +1,6 @@
 import React from "react";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router";
 import {
   Button,
   Dialog,
@@ -13,6 +15,7 @@ import {
 } from "@material-tailwind/react";
 import { baseUrl } from "../../Store/BaseUrl";
 function CheckIcon() {
+  
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -32,6 +35,10 @@ function CheckIcon() {
 }
 
 const PaymentDrawer = () => {
+  const navigate = useNavigate()
+  const { isAuthenticated } = useSelector(
+    (state) => state.user
+  );
   const [open, setOpen] = React.useState(false);
 
   const handleOpen = () => setOpen(!open);
@@ -116,10 +123,12 @@ const PaymentDrawer = () => {
             </ul>
           </CardBody>
           <CardFooter className="mt-12 p-0">
+          { isAuthenticated ? 
             <form
               action={`${baseUrl}/api/stripe/create-checkout-session`}
               method="POST"
             >
+              
               <Button
                 size="lg"
                 color="white"
@@ -131,6 +140,19 @@ const PaymentDrawer = () => {
                 Buy Premium
               </Button>
             </form>
+            :
+            <Button
+            size="lg"
+            color="white"
+            className="hover:scale-[1.02] focus:scale-[1.02] active:scale-100"
+            ripple={false}
+            fullWidth={true}
+            type="button"
+            onClick={()=>navigate('/login')}
+          >
+            Buy Premium
+          </Button>
+          }
           </CardFooter>
         </Card>
         {/* </DialogBody> */}

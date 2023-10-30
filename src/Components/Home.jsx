@@ -47,7 +47,7 @@ const Home = () => {
       <Courses/>
       <WhyUs/>
       <HomeSignup/>
-      <Blogs/>
+      {/* <Blogs/> */}
       <Footer/>
     </div>
   )

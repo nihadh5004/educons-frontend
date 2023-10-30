@@ -11,3 +11,7 @@ export const clearUserData = () => ({
     type: 'UPDATE_PREMIUM',
     payload: status,
   });
+  export const updateUsername = (status) => ({
+    type: 'UPDATE_USERNAME',
+    payload: status,
+  });

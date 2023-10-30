@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
 import { baseUrl } from '../../../Store/BaseUrl';
-
+import axiosInstance from '../../../Store/AxiosInterceptor'
 const UserRequestPage = () => {
   const { userId } = useSelector((state) => state.user);
   const [userRequests, setUserRequests] = useState([]);
@@ -10,7 +10,7 @@ const UserRequestPage = () => {
   useEffect(() => {
     const fetchUserRequests = async () => {
       try {
-        const response = await axios.get(`${baseUrl}/user-requests/${userId}`, {
+        const response = await axiosInstance.get(`${baseUrl}/user-requests/${userId}`, {
           headers: {
             "Content-Type": "application/json",
           },

@@ -5,6 +5,7 @@ import { w3cwebsocket as WebSocket } from 'websocket';
 import { baseUrl } from '../../Store/BaseUrl';
 import axios from 'axios';
 import './Chat.css'
+import chatImg from '../../assets/patterns020422_10.jpg'
 const ChatPage = ({id}) => {
   const { student } = useSelector((state) => state.user);
   const user_id = useSelector((state) => state.user.userId);
@@ -29,26 +30,26 @@ const ChatPage = ({id}) => {
   const [isWsOpen, setIsWsOpen] = useState(false);
   const [online,setOnline] = useState(false)
 
-  useEffect(()=>{
-    let other_side
-    if (student) {
-       other_side=userId
-    } else {
-       other_side=studentId
-    }
+  // useEffect(()=>{
+  //   let other_side
+  //   if (student) {
+  //      other_side=userId
+  //   } else {
+  //      other_side=studentId
+  //   }
 
-    const fetchOnline = async () => {
-      try {
-        const response = await axios.get(`${baseUrl}/online-status/${other_side}/`);
-        console.log(response.data);
-        setOnline(response.data)
-      } catch (error) {
-        console.error('Error fetching :', error);
-      }
-    };
-    fetchOnline();
+  //   const fetchOnline = async () => {
+  //     try {
+  //       const response = await axios.get(`${baseUrl}/online-status/${other_side}/`);
+  //       console.log(response.data);
+  //       setOnline(response.data)
+  //     } catch (error) {
+  //       console.error('Error fetching :', error);
+  //     }
+  //   };
+  //   fetchOnline();
 
-  },[userId, studentId])
+  // },[userId, studentId])
 
 
   useEffect(() => {
@@ -68,7 +69,7 @@ const ChatPage = ({id}) => {
   useEffect(() => {
     const connectToWebSocket = (userId, studentId) => {
       const roomName = `${userId}_${studentId}`;
-      const wsUrl = `ws://127.0.0.1:8000/ws/chat/${roomName}/?token=${token}`;
+      const wsUrl = `ws://13.51.204.237/ws/chat/${roomName}/`;
       const client = new WebSocket(wsUrl);
 
       client.onopen = () => {
@@ -80,7 +81,6 @@ const ChatPage = ({id}) => {
       client.onmessage = (message) => {
         console.log('Received WebSocket message:', message);
         const data = JSON.parse(message.data);
-        console.log(data.type);
         
         const message_get = data.message_content;
         console.log(data, 'return message user');
@@ -160,7 +160,7 @@ return (
  
   {
     student ?
-    <div className="h-[540px] flex flex-col">
+    <div className="h-[485px] flex flex-col " >
     {/* You now have a WebSocket connection in wsClient */}
     <div className="flex-grow overflow-y-auto px-4 py-8 custom-scrollbar">
       {messages.map((message, index) => (
@@ -201,7 +201,7 @@ return (
         </div>
       ))}
     </div>
-    <div className="bg-white p-2  border-t flex bg-[#DAD3CC]">
+    <div className=" p-2  border-t flex bg-[#DAD3CC]">
       <input
         className="border rounded p-2 w-full  focus:outline-none  shadow-lg"
         type="text"
@@ -257,7 +257,7 @@ return (
 
 
 
-              <div className="relative  md:h-[536px]  h-[476px] flex flex-col">
+              <div className="relative  md:h-[504px]  h-[448px] flex flex-col">
   {/* You now have a WebSocket connection in wsClient */}
   <div className="flex-grow overflow-y-auto px-4 py-8 custom-scrollbar">
     {messages.map((message, index) => (

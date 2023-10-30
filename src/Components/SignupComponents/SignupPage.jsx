@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import toast, { Toaster } from 'react-hot-toast';
 import { TEInput, TERipple } from "tw-elements-react";
 import { Spinner } from "@material-tailwind/react";
+import { baseUrl } from '../../Store/BaseUrl';
 
 const SignupPage = ({is_consultancy}) => {
         
@@ -36,7 +37,7 @@ const SignupPage = ({is_consultancy}) => {
               password,
               is_consultancy,
             };
-            const response = await axios.post('http://127.0.0.1:8000/signup',
+            const response = await axios.post(`${baseUrl}/signup`,
                             userData ,{headers: 
                           {'Content-Type': 'application/json'}, withCredentials: true });
                           if(response.status === 201) {

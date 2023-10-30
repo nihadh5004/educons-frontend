@@ -100,15 +100,12 @@ const AdminNavbar = () => {
 
         <div className={toggle ? 'absolute z-10 p-4 bg-white w-full px-8 md:hidden' :'hidden'}>
             <ul>
-                <li className='p-4 hover:bg-gray-100 ' onClick={()=>navigate('/')}>HOME</li>
-                <li className='p-4 hover:bg-gray-100' onClick={()=>navigate('/courses')}>COURSES</li>
-                <li className='p-4 hover:bg-gray-100' onClick={()=>navigate('/blogs')}>BLOGS</li>
-                <li className='p-4 hover:bg-gray-100'>COMMUNITIES</li>
-                <li className='p-4 hover:bg-gray-100' onClick={()=>navigate('/profile')}>PROFILE</li>
-                <li className='p-4 hover:bg-gray-100'>ABOUT US</li>
-                <div className='flex flex-col my-4 gap-4'>
-                <button className='px-7 py-2 rounded bg-[#20B486] text-white font-bold'>Login</button>
-                </div>
+                <li className='p-4 hover:bg-gray-100 ' onClick={()=>navigate('/dashboard')}>DASHBOARD</li>
+                <li className='p-4 hover:bg-gray-100' onClick={()=>navigate('/userlist')}>USERS</li>
+                <li className='p-4 hover:bg-gray-100' onClick={()=>navigate('/countries')}>COUNTRIES</li>
+                <li className='p-4 hover:bg-gray-100' onClick={()=>navigate('/blogslist')}>BLOGS</li>
+                <li className='p-4 hover:bg-gray-100' onClick={()=>navigate('/consultant-request-list')}>APPLICATIONS</li>
+                
             </ul>
         </div>
     </div>

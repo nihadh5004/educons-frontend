@@ -93,14 +93,14 @@ const CoursePageCard = ({
             {country}
           </Typography>
 
-          <Typography color="gray" className="mb-8 font-normal text-xs md:text-sm">
-  {description.split(" ").slice(0, 10).join(" ")}
-  <span className="hidden sm:inline"> {description.split(" ").slice(10).join(" ")}...</span>
+          <Typography color="gray" className="hidden md:flex mb-8 font-normal text-xs md:text-sm">
+  {description.split(" ").slice(0, 40).join(" ")}...
+  {/* <span className="hidden sm:inline"> {description.split(" ").slice(10).join(" ")}...</span> */}
 </Typography>
 
 
           {/* <a href="#" className="inline-block"> */}
-        <div className="flex gap-2">
+        <div className="md:flex gap-2">
         <button
             variant="text"
             className="flex items-center gap-2 rounded-full md:mt-0 "
@@ -133,7 +133,7 @@ const CoursePageCard = ({
             </a>
           </button>
           {is_consultancy && (
-            <div className="flex gap-2">
+            <div className="flex gap-2 md:mt-0 mt-3">
               <button
                 variant="text"
                 className="flex items-center gap-2"
@@ -141,7 +141,7 @@ const CoursePageCard = ({
               >
                 <a
              
-             class="relative inline-flex items-center justify-center p-4 px-4 py-2 overflow-hidden font-medium text-[#20B486] transition duration-300 ease-out border-2 border-[#20B486] rounded-full shadow-md group"
+             class="relative inline-flex items-center justify-center  md:px-4 px-1 md:py-2 overflow-hidden font-medium text-[#20B486] transition duration-300 ease-out border-2 border-[#20B486] rounded-full shadow-md group"
            >
              <span class="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-[#20B486] group-hover:translate-x-0 ease">
                <svg
@@ -172,7 +172,7 @@ const CoursePageCard = ({
               >
                 <a
              
-             class="relative inline-flex items-center justify-center p-4 px-4 py-2 overflow-hidden font-medium text-[#20B486] transition duration-300 ease-out border-2 border-[#20B486] rounded-full shadow-md group"
+             class="relative inline-flex items-center justify-center  md:px-4 px-1 md:py-2 overflow-hidden font-medium text-[#20B486] transition duration-300 ease-out border-2 border-[#20B486] rounded-full shadow-md group"
            >
              <span class="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-[#20B486] group-hover:translate-x-0 ease">
                <svg

@@ -8,6 +8,8 @@ import CoursePagination from "./CoursePagination";
 import {  useSelector } from "react-redux/es/hooks/useSelector";
 import { Button, IconButton, Typography } from "@material-tailwind/react";
 import { ArrowRightIcon, ArrowLeftIcon } from "@heroicons/react/24/outline";
+import loadinglottie from '../Animation/loading.json'
+import Lottie  from 'lottie-react';
 const CoursesPage = ({is_admin ,is_consultancy}) => {
   const [coursesData, setCoursesData] = useState({
     courses: [],
@@ -203,9 +205,12 @@ useEffect(() => {
   const startIndex = (active - 1) * coursesData.itemsPerPage;
   const endIndex = startIndex + coursesData.itemsPerPage;
   const slicedCourses = coursesData.courses.slice(startIndex, endIndex);
-  
+  const customStyle = {
+    fill: '#FF0000', // Change this color to your desired color
+  };
+
   return (
-    <div className="bg-[#e4f5eb]">
+    <div className={`bg-${isLoading ? 'white' : '[#e4f5eb]'}`}>
       <div className="md:flex justify-between w-full">
 
       <FilterDrawer
@@ -232,9 +237,9 @@ useEffect(() => {
       </div>
       <div className="md:p-4 p-2">
         {isLoading ? (
-          <div className="flex justify-center p-16 h-[900px]">
-            <Spinner />
-          </div>
+          <div className="flex justify-center items-center  p-16 h-[500px]">
+          <Lottie animationData={loadinglottie} className="w-1/6 " style={customStyle}/>
+         </div>
         ) : (
           slicedCourses.map((course) => (
             <CoursePageCard
@@ -242,7 +247,7 @@ useEffect(() => {
               course={course.name}
               country = {course.college.country.name}
               college = {course.college.name}
-              image={`http://127.0.0.1:8000${course.image}`}
+              image={`${baseUrl}${course.image}`}
               duration={course.duration}
               description={course.description}
               is_admin = {is_admin}

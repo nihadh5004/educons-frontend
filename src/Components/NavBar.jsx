@@ -181,7 +181,7 @@ const NavBar = () => {
               ? "absolute z-10 p-4 bg-white w-full px-8 md:hidden"
               : "hidden"
           }
-        >
+          >
           <ul>
             <li
               className="p-4 hover:bg-gray-100 "

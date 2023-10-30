@@ -88,13 +88,16 @@ const BlogDetailPage = ({is_admin}) => {
             <h1 className='text-gray-500'>{blogData.username}, on {new Date(blogData.created_date).toLocaleDateString()}</h1>
             <div class=" mt-5 border border-t-1 border-b-1 border-l-0 border-r-0 border-gray-300 p-2 relative">
               <div className='flex gap-3'>
-
+                <div>
               <BlogLikes blogId={id}/>
+                </div>
               <FaRegComment size={20} onClick={scrollToComments}/>
-              <div className='flex ml-auto gap-3'>
+              <div className='flex ml-auto items-center justify-center gap-3 '>
+              <div className='flex  gap-3'>
 
-              <WatsappShareBlog url={currentUrl} />
+              <WatsappShareBlog url={currentUrl}  />
               <BlogSave blogId={id}/>
+              </div>
               </div>
               </div>
             </div>

@@ -32,6 +32,9 @@ import Chat from './Components/ChatComponents/Chat'
 import StudentChatWithUser from './Components/ChatComponents/StudentChatWithUser';
 import LoginProtection from './Store/LoginProtection';
 import ConsultantConfimation from './Components/AccountConfirmComponents/ConsultantConfimation';
+import SavedBlogs from './Components/ProfileComponents/SavedBlogs';
+import ForgotPassword from './Components/LoginComponents/ForgotPassword';
+import ResetPassword from './Components/LoginComponents/ResetPassword';
 const App = () => {
   return (
     
@@ -45,9 +48,14 @@ const App = () => {
         <Route path="/consultancy-confirmation"  element={<ConsultantConfimation/>} />
         <Route path="/login"  element={<LoginProtection element={<Login/>} requiredRole={''} />}
          />
+        <Route path="/forgot-password"  element={<LoginProtection element={<ForgotPassword/>} requiredRole={''} />}
+         />
+        <Route path="/reset-password"  element={<LoginProtection element={<ResetPassword/>} requiredRole={''} />}
+         />
         <Route path="/admin-login"  element={<AdminLoginPage/>} />
         <Route path="/consultancy-login"  element={<ConsultancyLoginPage/>} />
         <Route path="/profile"  element={<Profile/>} />
+        <Route path="/saved-blogs"  element={<SavedBlogs/>} />
         <Route path="/courses"  element={<Courses/>} />
         <Route path="/course-details"  element={<CourseDetail/>} />
         <Route path="/blogs"  element={<Blogs/>} />

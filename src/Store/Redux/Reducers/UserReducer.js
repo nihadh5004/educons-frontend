@@ -27,6 +27,12 @@ const initialState = {
         ...state,
         premium: action.payload,
       };
+      case 'UPDATE_USERNAME':
+        console.log('updating');
+      return {
+        ...state,
+        username: action.payload,
+      };
       case 'CLEAR_USER_DATA':
         console.log('clearing')
         localStorage.clear();
@@ -35,6 +41,9 @@ const initialState = {
           isAuthenticated: false,
           username: '',
           role: '',
+          student: false,
+          userId : '',
+          premium : false,
         };
       default:
         return state;

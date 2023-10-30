@@ -5,13 +5,14 @@ import {FaUsers} from 'react-icons/fa'
 import {MdPendingActions} from 'react-icons/md'
 import axios from 'axios'
 import { baseUrl } from '../../Store/BaseUrl'
+import axiosInstance from '../../Store/AxiosInterceptor'
 
 const DashboardPage = () => {
   const [data, setData] = useState([]);
   const [userlist,setUserlist]=useState([])
 
   useEffect(() => {
-    axios
+    axiosInstance
       .get(`${baseUrl}/get-admin-dashboard/`)
       .then((response) => {
         // Handle successful response
@@ -33,7 +34,7 @@ const DashboardPage = () => {
         <div  className='md:flex'>
           <div>
 
-          <p className='text-4xl md:text-6xl md:ml-20 text-center md:text-left text-white md:mt-14 mt-7'>Monitor health of  your business</p>
+          <p className='text-4xl md:text-6xl md:ml-20 text-center md:text-left text-white md:mt-14 py-3'>Monitor health of  your business</p>
           <p className='md:ml-20 mt-2 md:text-left text-center text-gray-500 md:text-lg text-xs'>Control and analyze your data in the easiest way</p>
           </div>
           <div className='hidden md:flex h-[200px] w-1/2 flex ml-auto'>

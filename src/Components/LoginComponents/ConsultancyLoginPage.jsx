@@ -38,7 +38,7 @@ const ConsultancyLoginPage = () => {
             localStorage.clear();
             localStorage.setItem('accessToken', accessToken);
             localStorage.setItem('refreshToken', refreshToken);
-            axios.defaults.headers.common['Authorization'] = `Bearer ${response.data['access']}`;
+            // axios.defaults.headers.common['Authorization'] = `Bearer ${response.data['access']}`;
     
             dispatch(setUserData({ username, role, userId , student  }));
             

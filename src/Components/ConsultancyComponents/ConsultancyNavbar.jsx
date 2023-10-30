@@ -39,12 +39,12 @@ const ConsultancyNavbar = () => {
          <div>
 
     
-<div className='w-full h-[80px] bg-white border-b  fixed z-50  '>
-    <div className='md:max-w-[1240px]  max-w-[330px] w-full h-full flex justify-between items-center m-auto'>
+<div className='w-full h-[80px] bg-white border-b   fixed z-50  '>
+    <div className='md:max-w-[1240px]  max-w-[530px] w-full  h-full flex justify-between items-center m-auto'>
 
-        <h1 className='h-[25px] text-2xl text-[#20B486] font-bold' style={{ cursor: 'pointer' }} onClick={()=>navigate('/consultancy-dashboard')}>EduCons-Consultant</h1>
+        <h1 className='h-[25px] text-2xl text-[#20B486] ml-3 font-bold' style={{ cursor: 'pointer' }} onClick={()=>navigate('/consultancy-dashboard')}>EduCons-Consultant</h1>
 
-        <div className='hidden md:flex'>
+        <div className='hidden lg:flex'>
             <ul className='flex gap-9'>
                 <li className='group relative px-3 py-2 text-sm  ' style={{ cursor: 'pointer' }} onClick={()=>navigate('/consultancy-dashboard')}>
                 Dashboard
@@ -68,37 +68,55 @@ const ConsultancyNavbar = () => {
 
             </ul>
         </div>
-        <div className='hidden md:flex gap-6'>
+        <div className='hidden lg:flex gap-6'>
 
             <div className='flex gap-8'> 
                 {/* <button className='text-white bg-black p-2'>Request For Student Approval</button> */}
 
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 mt-2 ">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0M3.124 7.5A8.969 8.969 0 015.292 3m13.416 0a8.969 8.969 0 012.168 4.5" />
-                </svg>
-                <IconButton variant="text" className='  bg-red-500 text-white rounded-full transition-all duration-300 transform group hover:bg-black hover:scale-105' onClick={handleLogout}><i className="fa fa-power-off" /></IconButton > 
+                
+                <IconButton variant="text" className='  bg-red-500 text-white rounded-full transition-all duration-300 transform group hover:bg-black hover:scale-105 mr-5' onClick={handleLogout}><i className="fa fa-power-off" /></IconButton > 
             </div>
 
 
-           
                            
         </div>
+            <div className="lg:hidden ml-auto">
+           
+            <button
+              className="w-14 h-14 relative focus:outline-none  rounded"
+              onClick={() => setToggle(!toggle)}
+            >
+              <div className="block w-5 absolute left-6 top-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                <span
+                  className={`block absolute h-0.5 w-7 text-[#20B486] bg-current transform transition duration-500 ease-in-out ${
+                    toggle ? "rotate-45" : " -translate-y-1.5"
+                  }`}
+                ></span>
+                <span
+                  className={`block absolute h-0.5 w-7 text-[#20B486] bg-current transform transition duration-500 ease-in-out ${
+                    toggle ? "opacity-0" : ""
+                  }`}
+                ></span>
+                <span
+                  className={`block absolute h-0.5 w-7 text-[#20B486] bg-current transform transition duration-500 ease-in-out ${
+                    toggle ? "-rotate-45" : "translate-y-1.5"
+                  }`}
+                ></span>
+              </div>
+            </button>
+          </div>  
 
         
     </div>
 
 
-    <div className={toggle ? 'absolute z-10 p-4 bg-white w-full px-8 md:hidden' :'hidden'}>
+    <div className={toggle ? 'absolute z-10 p-4 bg-white w-full shadow-lg px-8 md:hidden' :'hidden'}>
         <ul>
-            <li className='p-4 hover:bg-gray-100 ' onClick={()=>navigate('/')}>HOME</li>
-            <li className='p-4 hover:bg-gray-100' onClick={()=>navigate('/courses')}>COURSES</li>
-            <li className='p-4 hover:bg-gray-100' onClick={()=>navigate('/blogs')}>BLOGS</li>
-            <li className='p-4 hover:bg-gray-100'>COMMUNITIES</li>
-            <li className='p-4 hover:bg-gray-100' onClick={()=>navigate('/profile')}>PROFILE</li>
-            <li className='p-4 hover:bg-gray-100'>ABOUT US</li>
-            <div className='flex flex-col my-4 gap-4'>
-            <button className='px-7 py-2 rounded bg-[#20B486] text-white font-bold'>Login</button>
-            </div>
+            <li className='p-4 hover:bg-gray-100 ' onClick={()=>navigate('/consultancy-dashboard')}>DASHBOARD</li>
+            <li className='p-4 hover:bg-gray-100' onClick={()=>navigate('/consultancy-courses')}>COURSES</li>
+            <li className='p-4 hover:bg-gray-100' onClick={()=>navigate('/user-requests')}>REQUESTS</li>
+            <li className='p-4 hover:bg-gray-100' onClick={()=>navigate('/consultancy-students')}>STUDENTS</li>
+            
         </ul>
     </div>
 </div>

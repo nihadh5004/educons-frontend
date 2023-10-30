@@ -5,10 +5,10 @@ const CommentLikes = () => {
   const [liked,setLiked] =useState(false)
 
   const handleCommentLike=()=>{
-    
+    setLiked(!liked);
   }
   return (
-    <div className='text-gray-500 w-full'>        
+    <div className={`w-full ${liked ? 'text-black' : 'text-gray-500'}`}>
       <p onClick={handleCommentLike}>Like</p>
     </div>
   )

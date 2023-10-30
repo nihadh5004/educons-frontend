@@ -6,10 +6,20 @@ import { useSelector } from "react-redux";
 import Modal from "react-modal";
 import ReactCrop from "react-image-crop";
 import "react-image-crop/dist/ReactCrop.css";
+import axiosInstance from "../../Store/AxiosInterceptor";
+import { useNavigate } from "react-router";
+import loadinglottie from '../Animation/loading.json'
+import Lottie  from 'lottie-react';
+import toast, { Toaster } from 'react-hot-toast';
+import {  useDispatch } from "react-redux";
+import { updateUsername } from "../../Store/Redux/Actions/UserAction";
+
 const ProfilePage = () => {
+  const navigate = useNavigate();
   const { isAuthenticated, username, role, student, premium } = useSelector(
     (state) => state.user
   );
+  const dispatch = useDispatch();
 
   const [profileData, setProfileData] = useState({});
   const [isLoading, setIsLoading] = useState(true);
@@ -17,19 +27,17 @@ const ProfilePage = () => {
   const [isProfilePic, setIsProfilePic] = useState(false);
   useEffect(() => {
     const fetchProfileData = async () => {
+      
+      
       try {
-        const response = await axios.get(
-          `${baseUrl}/profile/?username=${username}`,
-          {
-            headers: {
-              "Content-Type": "application/json",
-            },
-            withCredentials: true,
-          }
+        const accessToken = localStorage.getItem('accessToken');
+       
+        const response = await axiosInstance.get(
+          `${baseUrl}/profile/?username=${username}`
+          
         );
         setProfileData(response.data);
         setSelectedImage(response.data.image);
-        console.log(response.data);
         setIsLoading(false);
       } catch (error) {
         console.error("Error fetching profile:", error);
@@ -49,7 +57,6 @@ const ProfilePage = () => {
   const closeEditModal = () => {
     setIsEditModalOpen(false);
   };
-  // console.log(profileData.username);
   const [editFormData, setEditFormData] = useState({
     username: "",
     email: "",
@@ -99,7 +106,6 @@ const ProfilePage = () => {
     // setIsUploadingPhoto(true);
   };
 
-  console.log(selectedImage);
 
   // Update `editFormData` when `profileData` changes
   useEffect(() => {
@@ -132,20 +138,28 @@ const ProfilePage = () => {
           withCredentials: true,
         }
       );
+      if (response.status ==200){
 
-      console.log("Profile updated successfully:", response.data);
-      setProfileData(response.data);
+        setProfileData(response.data);
+        console.log(response.data.username);
+        dispatch(updateUsername(response.data.username))
+        closeEditModal();
+      }else{
+        toast.error(response.message);
 
-      closeEditModal();
+      }
+
     } catch (error) {
+      toast.error('username already exists');
+
       console.error("Error updating profile:", error);
     }
   };
 
   if (isLoading) {
     return (
-      <div className="flex justify-center p-16 h-[900px]">
-        <Spinner />
+      <div className="flex justify-center items-center  p-16 h-[500px]">
+       <Lottie animationData={loadinglottie} className="w-1/6"/>
       </div>
     );
   }
@@ -170,7 +184,7 @@ const ProfilePage = () => {
                   strokeWidth={1.5}
                   stroke="currentColor"
                   className="h-6 w-6"
-                  // onClick={handleCameraIconClick}
+                  onClick={handleCameraIconClick}
                   style={{ cursor: "pointer" }}
                 >
                   <path
@@ -212,7 +226,7 @@ const ProfilePage = () => {
 
           <div className=" md:flex  justify-between mt-32 md:mt-0 md:justify-center">
             <div className=" p-2 md:ml-2 mt-2 ">
-              <button ><a  class="px-5 py-2.5 relative rounded group overflow-hidden font-medium  bg-[#E9F8F3B2] text-black inline-block">
+              <button onClick={()=>navigate('/saved-blogs')} ><a  class="px-5 py-2.5 relative rounded group overflow-hidden font-medium  bg-[#E9F8F3B2] text-black inline-block">
 <span class="absolute top-0 left-0 flex w-full h-0 mb-0 transition-all duration-200 ease-out transform translate-y-0 bg-[#20B486] group-hover:h-full opacity-90"></span>
 <span class="relative group-hover:text-white">Saved Items</span>
 </a></button>
@@ -338,6 +352,31 @@ const ProfilePage = () => {
           </form>
         </div>
       </Modal>
+      <Toaster
+  position="top-center"
+  reverseOrder={false}
+  gutter={8}
+  containerClassName=""
+  containerStyle={{}}
+  toastOptions={{
+    // Define default options
+    className: '',
+    duration: 3000,
+    style: {
+      background: '#363636',
+      color: '#fff',
+    },
+
+    // Default options for specific types
+    success: {
+      duration: 3000,
+      theme: {
+        primary: 'green',
+        secondary: 'black',
+      },
+    },
+  }}
+/>
     </div>
   );
 };

@@ -140,7 +140,7 @@ const Comments = ({ blogId }) => {
                 >
                   <CommentReply id={comment.id} />
                 </p>
-                <p className="ml-auto">likes</p>
+                {/* <p className="ml-auto">likes</p> */}
               </div>
             </div>
           ))}

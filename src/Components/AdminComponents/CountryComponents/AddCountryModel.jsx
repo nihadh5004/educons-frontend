@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import Modal from 'react-modal';
 import axios from 'axios';
 import { baseUrl } from '../../../Store/BaseUrl';
+import toast, { Toaster } from 'react-hot-toast';
+import axiosInstance from '../../../Store/AxiosInterceptor';
 
 const customStyles = {
   content: {
@@ -38,6 +40,11 @@ const AddCountryModal = ({ isOpen, onRequestClose, onSubmit }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (formData.name =='' || formData.about == '') {
+      toast.error('Name and About are required fields.');
+
+      return;
+    }
     try {
       const formDataToSend = new FormData(); // Create a FormData object
       formDataToSend.append('name', formData.name);
@@ -47,7 +54,7 @@ const AddCountryModal = ({ isOpen, onRequestClose, onSubmit }) => {
       formDataToSend.append('image', formData.imageFile);
 
       // Send a POST request to the backend endpoint 'addcountry' with the form data
-      const response = await axios.post(`${baseUrl}/addcountry/`, formDataToSend, {
+      const response = await axiosInstance.post(`${baseUrl}/addcountry/`, formDataToSend, {
         headers: {
           'Content-Type': 'multipart/form-data', // Set the content type for form data
         },
@@ -160,6 +167,31 @@ const AddCountryModal = ({ isOpen, onRequestClose, onSubmit }) => {
         </button>
       </form>
     </Modal>
+    <Toaster
+  position="top-center"
+  reverseOrder={false}
+  gutter={8}
+  containerClassName=""
+  containerStyle={{}}
+  toastOptions={{
+    // Define default options
+    className: '',
+    duration: 3000,
+    style: {
+      background: '#363636',
+      color: '#fff',
+    },
+
+    // Default options for specific types
+    success: {
+      duration: 3000,
+      theme: {
+        primary: 'green',
+        secondary: 'black',
+      },
+    },
+  }}
+/>
     </div>
   );
 };

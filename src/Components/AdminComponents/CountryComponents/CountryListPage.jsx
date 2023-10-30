@@ -20,6 +20,7 @@ import {
 } from "@material-tailwind/react";
 import axios from 'axios';
 import AddCountryModal from './AddCountryModel';
+import axiosInstance from '../../../Store/AxiosInterceptor';
 
 const ITEMS_PER_PAGE = 2;
 
@@ -37,7 +38,7 @@ const CountryListPage = () => {
   useEffect(() => {
     const fetchCountries = async () => {
       try {
-        const response = await axios.get(`${baseUrl}/countries/`, {
+        const response = await axiosInstance.get(`${baseUrl}/countries/`, {
           headers: {
             "Content-Type": "application/json",
           },

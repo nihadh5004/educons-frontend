@@ -3,6 +3,7 @@ import Table from '../../AdminComponents/ConsultantRequestComponents/Table';
 import { useSelector } from 'react-redux';
 import axios from 'axios'; // Import Axios
 import { baseUrl } from '../../../Store/BaseUrl';
+import axiosInstance from '../../../Store/AxiosInterceptor';
 const StudentListPage = () => {
   const { userId } = useSelector((state) => state.user);
   const [students, setStudents] = useState([]);
@@ -12,7 +13,7 @@ const StudentListPage = () => {
     const fetchConsultantStudents = async () => {
       try {
         // Make an API request to fetch the consultant's students list
-        const response = await axios.get(`${baseUrl}/consultant-students/${userId}`); // Replace with your API endpoint
+        const response = await axiosInstance.get(`${baseUrl}/consultant-students/${userId}`); // Replace with your API endpoint
         
         // Update the state with the fetched students list
         setStudents(response.data);

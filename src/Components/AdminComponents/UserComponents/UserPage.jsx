@@ -23,6 +23,7 @@ import {
     IconButton,
     Tooltip,
   } from "@material-tailwind/react";
+import axiosInstance from '../../../Store/AxiosInterceptor';
    
   const TABS = [
     {
@@ -55,12 +56,11 @@ const UserPage = () => {
     useEffect(() => {
       const userlistData = async () => {
         try {
-          const response = await axios.get(`${baseUrl}/userlist/`, {
-            headers: {
-              "Content-Type": "application/json",
-            },
-            withCredentials: true,
-          });
+          const accessToken = localStorage.getItem('accessToken');
+          const headers = {
+            Authorization: `Bearer ${accessToken}`,
+          };
+          const response = await axiosInstance.get(`${baseUrl}/userlist/`);
   
           setUserList(response.data);
           setFiltersTabs(response.data);
@@ -115,7 +115,7 @@ const UserPage = () => {
      // Function to block a user
   const blockUser = async (userId) => {
     try {
-      const response = await axios.put(`${baseUrl}/blockuser/${userId}/`,{
+      const response = await axiosInstance.put(`${baseUrl}/blockuser/${userId}/`,{
         headers: {
           "Content-Type": "application/json",
         },
@@ -145,7 +145,7 @@ const UserPage = () => {
 
 // Add an event handler for unblocking a user
 const handleUnblockUser = (userId) => {
-    axios
+    axiosInstance
       .put(`${baseUrl}/unblockuser/${userId}/`, {
         headers: {
           "Content-Type": "application/json",
