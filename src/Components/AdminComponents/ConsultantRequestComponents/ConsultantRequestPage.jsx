@@ -31,7 +31,7 @@ const ConsultantRequestPage = () => {
 
       const handleApproveRequest = async (requestId,user) => { 
         const roomName = `${userId}_${user}`;
-        const wsUrl = `ws://13.51.204.237/ws/notification/${roomName}/`;
+        const wsUrl = `wss://13.51.204.237/ws/notification/${roomName}/`;
         const client = new WebSocket(wsUrl);
         client.onopen = () => {
           console.log('WebSocket connection established');
