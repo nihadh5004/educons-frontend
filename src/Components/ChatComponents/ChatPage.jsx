@@ -69,7 +69,7 @@ const ChatPage = ({id}) => {
   useEffect(() => {
     const connectToWebSocket = (userId, studentId) => {
       const roomName = `${userId}_${studentId}`;
-      const wsUrl = `ws://13.51.204.237/ws/chat/${roomName}/`;
+      const wsUrl = `wss://13.51.204.237/ws/chat/${roomName}/`;
       const client = new WebSocket(wsUrl);
 
       client.onopen = () => {
