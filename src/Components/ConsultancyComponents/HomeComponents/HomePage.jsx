@@ -31,7 +31,7 @@ const HomePage = () => {
   useEffect(() => {
     const connectToWebSocket = (userId) => {
       const roomName = `1_${userId}`;
-      const wsUrl = `ws://13.51.204.237/ws/notification/${roomName}/`;
+      const wsUrl = `wss://13.51.204.237/ws/notification/${roomName}/`;
       const client = new WebSocket(wsUrl);
 
       client.onopen = () => {

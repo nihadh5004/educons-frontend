@@ -3,6 +3,7 @@ import senecaImg from "../../assets/Seneca-4.png";
 import axios from "axios";
 import { baseUrl } from "../../Store/BaseUrl";
 import { useSelector, useDispatch } from "react-redux";
+import toast, { Toaster } from 'react-hot-toast';
 
 import {
   Tabs,
@@ -93,12 +94,21 @@ const CourseDetailPage = () => {
 
       // Check the response status and handle it as needed
       if (response.status === 201) {
+        toast.success("Request sent successfully");
+
         console.log("Request created successfully");
-      } else {
+      } else if (response.status == 400) {
+        toast.error("Request already sent");
+
         // Handle other status codes, such as validation errors
+      }else{
+        toast.error("internal server error");
+
         console.error("Request creation failed with status:", response.status);
+
       }
     } catch (error) {
+      toast.error("Request already has been sent");
       console.error("Error creating request:", error);
     }
   };
@@ -192,7 +202,31 @@ const CourseDetailPage = () => {
               </div>
         </div>
       </div>
-      
+      <Toaster
+  position="top-center"
+  reverseOrder={false}
+  gutter={8}
+  containerClassName=""
+  containerStyle={{}}
+  toastOptions={{
+    // Define default options
+    className: '',
+    duration: 3000,
+    style: {
+      background: '#363636',
+      color: '#fff',
+    },
+
+    // Default options for specific types
+    success: {
+      duration: 3000,
+      theme: {
+        primary: 'green',
+        secondary: 'black',
+      },
+    },
+  }}
+/> 
     </div>
   );
 };
