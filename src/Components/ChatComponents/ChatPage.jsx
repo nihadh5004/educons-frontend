@@ -29,7 +29,7 @@ const ChatPage = ({id}) => {
   const [messageInput, setMessageInput] = useState('');
   const [isWsOpen, setIsWsOpen] = useState(false);
   const [online,setOnline] = useState(false)
-
+  const [trigger ,setTrigger]=useState(false)
   // useEffect(()=>{
   //   let other_side
   //   if (student) {
@@ -64,12 +64,12 @@ const ChatPage = ({id}) => {
     };
 
     fetchMessages();
-  }, [userId, studentId]);
+  }, [userId, studentId,trigger]);
 
   useEffect(() => {
     const connectToWebSocket = (userId, studentId) => {
       const roomName = `${userId}_${studentId}`;
-      const wsUrl = `wss://13.51.204.237/ws/chat/${roomName}/`;
+      const wsUrl = `wss://www.edu-cons.online/ws/chat/${roomName}/`;
       const client = new WebSocket(wsUrl);
 
       client.onopen = () => {
@@ -124,10 +124,10 @@ const ChatPage = ({id}) => {
         if (isWsOpen && wsClient) {
           wsClient.send(JSON.stringify(newMessage));
         } else {
+          setTrigger(!trigger)
           console.error('WebSocket is not open');
         }
       }
-
       setMessageInput('');
     } catch (error) {
       console.error('Error for sending messages:', error);
