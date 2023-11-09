@@ -12,11 +12,36 @@ const SignupPage = ({is_consultancy}) => {
         
         // Create state variables to store form data
         const [username, setUsername] = useState('');
+        const [usernameError, setUsernameError] = useState('');
         const [email, setEmail] = useState('');
+        const [emailError, setEmailError] = useState('');
         const [password, setPassword] = useState('');
         const [confirmPassword, setConfirmPassword] = useState('');
         const [isLoading, setIsLoading] = useState(false); // State to track loading
         const navigate = useNavigate();
+
+        const validateEmail = (emailValue) => {
+          if (emailValue) {
+            const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
+            if (!emailRegex.test(emailValue) || !emailValue.includes(".com")) {
+              setEmailError("Invalid email address.");
+            } else {
+              setEmailError('');
+            }
+          } else {
+            setEmailError('Email address is required.');
+          }
+        };
+
+        const validateUsername = (usernameValue) => {
+          if (/\d/.test(usernameValue)) {
+            setUsernameError('Username should not contain numbers.');
+          } else {
+            setUsernameError('');
+          }
+        };
+
+
         // Handle form submission
       const handleSubmit = async () => {
        
@@ -25,9 +50,13 @@ const SignupPage = ({is_consultancy}) => {
         console.log('Email:', email);
         console.log('Password:', password);
         console.log('Confirm Password:', confirmPassword);
-        if (password != confirmPassword){
-          toast.error('Password didnt match')
-        }else{
+        if (emailError) {
+          toast.error('Please fix the email validation error.');
+        } else if (password !== confirmPassword) {
+          toast.error('Password didn\'t match');
+        } else if (usernameError) {
+          toast.error('Please fix the username validation error.');
+        }else {
           setIsLoading(true); // Start loading
           try{
   
@@ -99,22 +128,40 @@ const SignupPage = ({is_consultancy}) => {
               ) : (
           <form>
             {/* <!-- username input --> */}
+            <div className="mb-6"
+>
+
             <TEInput
               type="text"
               label="Username"
               size="lg"
-              className="mb-6"
-              value={username} onChange={(e) => setUsername(e.target.value)}
+              value={username} onChange={(e) => {
+                const usernameValue = e.target.value;
+                setUsername(usernameValue);
+                validateUsername(usernameValue);
+              }}
             ></TEInput>
+            {usernameError && <p className="text-red-500">{usernameError}</p>}
+            </div>
+
 
             {/* <!-- Email input --> */}
+            <div className='mb-6'>
+
             <TEInput
               type="email"
               label="Email address"
               size="lg"
-              className="mb-6"
-              value={email} onChange={(e) => setEmail(e.target.value)}
+              className=""
+              value={email} onChange={(e) => {
+                const emailValue = e.target.value;
+                setEmail(emailValue);
+                validateEmail(emailValue);
+              }}
             ></TEInput>
+            {emailError && <p className="text-red-500">{emailError}</p>}
+            </div>
+
             
 
             {/* <!--Password input--> */}
@@ -160,24 +207,7 @@ const SignupPage = ({is_consultancy}) => {
             
 
             {/* <!-- Divider --> */}
-            <div className="my-4 flex items-center before:mt-0.5 before:flex-1 before:border-t before:border-neutral-300 after:mt-0.5 after:flex-1 after:border-t after:border-neutral-300">
-              <p className="mx-4 mb-0 text-center font-semibold dark:text-neutral-200">
-                OR
-              </p>
-            </div>
-
-            {/* <!-- Social login buttons --> */}
             
-              <a
-                className="mb-3 flex w-full items-center justify-center rounded bg-primary px-7 pb-2.5 pt-3 text-center text-sm font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
-                style={{ backgroundColor: "#3b5998" }}
-                href="#!"
-                role="button"
-              >
-                {/* <!-- Facebook --> */}
-                <i className='fa fa-google px-3'></i>
-                Continue with Google
-              </a>
            
            
           </form>

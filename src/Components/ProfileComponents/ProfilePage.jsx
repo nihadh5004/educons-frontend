@@ -25,6 +25,10 @@ const ProfilePage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [selectedImage, setSelectedImage] = useState(null);
   const [isProfilePic, setIsProfilePic] = useState(false);
+  const [usernameError, setUsernameError] = useState('');
+  const [emailError, setEmailError] = useState('');
+  const [contactError, setContactError] = useState('');
+
   useEffect(() => {
     const fetchProfileData = async () => {
       
@@ -122,11 +126,23 @@ const ProfilePage = () => {
       ...editFormData,
       [name]: value,
     });
+    // Perform validation based on the field name
+  if (name === "username") {
+    validateUsername(value);
+  } else if (name === "email") {
+    validateEmail(value);
+  } else if (name === "contact") {
+    validateContact(value);
+  }
   };
 
   const handleEditSubmit = async (e) => {
     e.preventDefault();
-
+    if (usernameError || emailError || contactError) {
+      // Show a toast error message or perform any other necessary action
+      toast.error('Please fix the validation errors before submitting.');
+      return; 
+    }
     try {
       const response = await axios.put(
         `${baseUrl}/update-profile/${profileData.id}/`,
@@ -163,6 +179,33 @@ const ProfilePage = () => {
       </div>
     );
   }
+    const validateUsername = (value) => {
+      if (/\d/.test(value)) {
+        setUsernameError('Username should not contain numbers.');
+      } else {
+        setUsernameError('');
+      }
+    };
+
+    const validateEmail = (value) => {
+      const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
+      if (!emailRegex.test(value) || !value.includes(".com")) {
+        setEmailError('Invalid email address');
+      } else {
+        setEmailError('');
+      }
+    };
+
+    const validateContact = (value) => {
+      // Remove any non-numeric characters (e.g., spaces, dashes)
+      const numericValue = value.replace(/\D/g, '');
+    
+      if (numericValue.length !== 10) {
+        setContactError('Contact should contain exactly ten digits.');
+      } else {
+        setContactError(''); // Clear the error message
+      }
+    };
 
   return (
     <div className="md:p-16 p-3 bg-[#E9F8F3B2]">
@@ -308,6 +351,8 @@ const ProfilePage = () => {
                 value={editFormData.username}
                 onChange={handleEditInputChange}
               />
+                {usernameError && <p className="text-red-500">{usernameError}</p>}
+
             </div>
             <div className="mb-4">
               <label
@@ -325,6 +370,8 @@ const ProfilePage = () => {
                 value={editFormData.email}
                 onChange={handleEditInputChange}
               />
+                {emailError && <p className="text-red-500">{emailError}</p>}
+
             </div>
             <div className="mb-4">
               <label
@@ -342,6 +389,8 @@ const ProfilePage = () => {
                 value={editFormData.contact}
                 onChange={handleEditInputChange}
               />
+                {contactError && <p className="text-red-500">{contactError}</p>}
+
             </div>
             <button
               type="submit"

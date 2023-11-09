@@ -87,6 +87,8 @@ const EditCourseModal = ({ course,courseId, image, college, duration, country, d
             value={editedCourse.course}
             onChange={handleInputChange}
             className="w-full px-3 py-2 border rounded focus:outline-none focus:border-blue-500"
+            required
+
           />
         </div>
        
@@ -104,12 +106,14 @@ const EditCourseModal = ({ course,courseId, image, college, duration, country, d
         <div className="mb-4">
           <label htmlFor="duration" className="block text-gray-700 font-semibold">Duration:</label>
           <input
-            type="text"
+            type="number"
             id="duration"
             name="duration"
             value={editedCourse.duration}
             onChange={handleInputChange}
             className="w-full px-3 py-2 border rounded focus:outline-none focus:border-blue-500"
+            required
+            min="1"
           />
         </div>
         <div className="mb-4">
@@ -121,6 +125,8 @@ const EditCourseModal = ({ course,courseId, image, college, duration, country, d
             value={editedCourse.country}
             onChange={handleInputChange}
             className="w-full px-3 py-2 border rounded focus:outline-none focus:border-blue-500"
+            required
+
           />
         </div>
         <div className="mb-4">
@@ -149,6 +155,8 @@ const EditCourseModal = ({ course,courseId, image, college, duration, country, d
             value={editedCourse.description}
             onChange={handleInputChange}
             className="w-full px-3 py-2 border rounded focus:outline-none focus:border-blue-500"
+            required
+
           />
         </div>
         <div className="flex justify-end">

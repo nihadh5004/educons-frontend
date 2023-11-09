@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import PaymentDrawer from "../PaymentComponents/PaymentDrawer";
+import loadinglottie from '../Animation/loading.json'
+import Lottie  from 'lottie-react';
 import {
   Card,
   CardHeader,
@@ -19,6 +21,7 @@ const ChatStudentsPage = () => {
   const [students, setStudents] = useState([]);
   const [wsClient, setWsClient] = useState(null);
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(true); // Loading state
 
   useEffect(() => {
     // Fetch the list of students from your API when the component mounts
@@ -26,22 +29,31 @@ const ChatStudentsPage = () => {
       try {
         const response = await axios.get(`${baseUrl}/student-chat-list/`);
         setStudents(response.data);
+        setIsLoading(false); // Set loading state to false when data is fetched
+
       } catch (error) {
         console.error("Error fetching students:", error);
+        setIsLoading(false); // Set loading state to false on error
+
       }
     };
 
     fetchStudents();
   }, []);
 
-  // Function to open a WebSocket connection
 
-  // Cleanup function to close the WebSocket connection
 
   return (
-    <div className="p-12 bg-[#e4f5eb] flex flex-wrap h-screen ">
+    <div className={`p-12 bg-${isLoading ? 'white' : '[#e4f5eb]'} flex flex-wrap h-screen`}>
+      {isLoading ? (
+          <div className="flex justify-center items-center  p-16 h-[500px]">
+          <Lottie animationData={loadinglottie} className="w-1/6 " />
+         </div>
+        ) : (
+          <div>
+
       {students.map((student) => (
-        <Card className="md:w-96 h-[400px] md:ml-12" key={student.id}>
+        <Card className="md:w-96  h-[400px] md:ml-12" key={student.id}>
           <CardHeader floated={false} className="h-50">
             <img src={`${baseUrl}${student.image}`} alt="profile-picture" />
           </CardHeader>
@@ -127,6 +139,9 @@ const ChatStudentsPage = () => {
           </CardFooter>
         </Card>
       ))}
+                </div>
+
+        )}
     </div>
   );
 };

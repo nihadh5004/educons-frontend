@@ -212,6 +212,7 @@ const AddCourseFormPage = () => {
             value={formData.duration}
             onChange={handleChange}
             required
+            min="1"
             className="mt-1 p-2 block w-full border border-gray-300 rounded-md focus:ring focus:ring-blue-200 focus:outline-none"
           />
         </div>

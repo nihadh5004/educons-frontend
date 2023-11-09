@@ -61,10 +61,9 @@ const StudentChatWithUserPage = () => {
 
               {/* Chat list */}
               <div className="bg-white  flex-1 overflow-auto">
-                {/* Chat list items */}
-                {/* Example chat item */}
+                
                   {chattedUsers.map((user) => (
-                <div className="px-3   flex items-center bg-grey-light cursor-pointer hover:bg-gray-200">
+                <div className="px-3   flex items-center bg-grey-light cursor-pointer hover:bg-gray-200" key={user.id}>
                   <div>
                     <img className="md:h-12 md:w-12 w-5 h-5 rounded-full" src={`${baseUrl}${user.image}`} alt="Chat User" />
                   </div>

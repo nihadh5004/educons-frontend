@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import { w3cwebsocket as WebSocket } from 'websocket';
 import { baseUrl } from '../../Store/BaseUrl';
 import axios from 'axios';
+import {BiSolidSend} from 'react-icons/bi'
 import './Chat.css'
 import chatImg from '../../assets/patterns020422_10.jpg'
 const ChatPage = ({id}) => {
@@ -14,6 +15,7 @@ const ChatPage = ({id}) => {
   const studentName = queryParams.get('student_name');
   const token = localStorage.getItem('accessToken')
   let userId, studentId;
+  const bottomRef = useRef();
 
   if (student) {
     studentId = user_id
@@ -30,26 +32,6 @@ const ChatPage = ({id}) => {
   const [isWsOpen, setIsWsOpen] = useState(false);
   const [online,setOnline] = useState(false)
   const [trigger ,setTrigger]=useState(false)
-  // useEffect(()=>{
-  //   let other_side
-  //   if (student) {
-  //      other_side=userId
-  //   } else {
-  //      other_side=studentId
-  //   }
-
-  //   const fetchOnline = async () => {
-  //     try {
-  //       const response = await axios.get(`${baseUrl}/online-status/${other_side}/`);
-  //       console.log(response.data);
-  //       setOnline(response.data)
-  //     } catch (error) {
-  //       console.error('Error fetching :', error);
-  //     }
-  //   };
-  //   fetchOnline();
-
-  // },[userId, studentId])
 
 
   useEffect(() => {
@@ -65,6 +47,14 @@ const ChatPage = ({id}) => {
 
     fetchMessages();
   }, [userId, studentId,trigger]);
+   
+  useEffect(() => {
+    // Scroll to the bottom when the component mounts and when a new message is sent
+    if (bottomRef.current) {
+      bottomRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [messages]);
+
 
   useEffect(() => {
     const connectToWebSocket = (userId, studentId) => {
@@ -129,6 +119,7 @@ const ChatPage = ({id}) => {
         }
       }
       setMessageInput('');
+      
     } catch (error) {
       console.error('Error for sending messages:', error);
     }
@@ -162,7 +153,7 @@ return (
     student ?
     <div className="h-[485px] flex flex-col " >
     {/* You now have a WebSocket connection in wsClient */}
-    <div className="flex-grow overflow-y-auto px-4 py-8 custom-scrollbar">
+    <div className="flex-grow overflow-y-auto px-4 py-8 custom-scrollbar" >
       {messages.map((message, index) => (
         <div
           key={index}
@@ -183,6 +174,7 @@ return (
                 ? 'bg-green-500 text-white'
                 : 'bg-blue-500 text-white'
             }`}
+            ref={index === messages.length - 1 ? bottomRef : null}
           >
             <div className='text-lg'>
 
@@ -208,12 +200,18 @@ return (
         placeholder="Type your message..."
         value={messageInput}
         onChange={(e) => setMessageInput(e.target.value)}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" ) {
+            e.preventDefault(); 
+            handleSendMessage();
+          }
+        }}
       />
       <button
-        className="ml-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+        className="ml-4  text-white px-4 py-2 rounded hover:bg-gray-600"
         onClick={handleSendMessage}
       >
-        Send
+        <BiSolidSend color='black'/>
       </button>
     </div>
   </div> 
@@ -299,6 +297,13 @@ return (
       placeholder="Type your message..."
       value={messageInput}
       onChange={(e) => setMessageInput(e.target.value)}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" ) {
+          e.preventDefault(); 
+          console.log('enter pressed');// Prevent the default behavior (form submission)
+          handleSendMessage();
+        }
+      }}
     />
     <button
       className="ml-4 bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-blue-600"

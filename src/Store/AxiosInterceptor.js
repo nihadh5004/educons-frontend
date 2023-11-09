@@ -1,14 +1,10 @@
 import axios from 'axios'
 import jwt_decode from "jwt-decode";
 import dayjs from 'dayjs'
-
-
 const baseURL = 'https://www.edu-cons.online'
 const access = localStorage.getItem('accessToken')
-
 const CancelToken = axios.CancelToken;
 const source = CancelToken.source();
-
 
 const axiosInstance = axios.create({
   withCredentials: true, 
@@ -53,6 +49,10 @@ axiosInstance.interceptors.request.use(async req => {
           console.log('Request canceled:', error.message);
         } else {
           console.error('Error refreshing the token:', error);
+          localStorage.clear()
+          window.location.href = '/login';
+
+          
         }
       }
       return req;

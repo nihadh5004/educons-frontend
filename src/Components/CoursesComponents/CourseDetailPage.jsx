@@ -4,7 +4,7 @@ import axios from "axios";
 import { baseUrl } from "../../Store/BaseUrl";
 import { useSelector, useDispatch } from "react-redux";
 import toast, { Toaster } from 'react-hot-toast';
-
+import { useNavigate } from "react-router";
 import {
   Tabs,
   TabsHeader,
@@ -14,6 +14,7 @@ import {
 } from "@material-tailwind/react";
 
 const CourseDetailPage = () => {
+  const navigate = useNavigate();
   const { userId } = useSelector((state) => state.user);
   const [courseDetails, setCourseDetails] = useState({
     course: [],
@@ -73,6 +74,10 @@ const CourseDetailPage = () => {
   console.log(courseDetails.collegeName);
 
   const handleUserRequest = async () => {
+    if(userId ==""){
+      navigate('/login')
+      return
+    }
     try {
       // Create a request object with the user's ID and the course's ID
       const requestData = {
